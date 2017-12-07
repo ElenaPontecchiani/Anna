@@ -1,4 +1,5 @@
-//fino base 10+26
+#ifndef BASEX_H
+#define BASEX_H
 
 template<class T>
 class basex{
@@ -7,7 +8,7 @@ private:
     int base;
     static int charToInt(const char&);//conversione char->int
     static char intToChar(const int&);//conversione int->char
-    static T stingToNum(const string&,const int&);//string->T
+    static T stringToNum(const string&,const int&);//string->T
 
 public:
         
@@ -27,14 +28,11 @@ public:
     //Conversioni
     operator string()const; //Converto *this a stringa
     /*  Sarà necessario dichiarare dei metodi di conversione per i tipi che T può assumere
-        = pinga in culo*/
+        = pigna in culo*/
     void changeBase(int base);
 
 //overload output
 
-
-
-
-
-
 };
+
+#endif
