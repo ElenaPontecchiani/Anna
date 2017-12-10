@@ -1,14 +1,19 @@
 #ifndef BASEX_H
 #define BASEX_H
 
+#include <string.h>
 template<class T>
 class basex{
 private:
     T raw_number;//solo tipi num e inbase 10
     int base;
+    
+    static int approx10;
+
     static int charToInt(const char&);//conversione char->int
     static char intToChar(const int&);//conversione int->char
     static T stringToNum(const string&,const int&);//string->T
+    static std::string basxToString(const basex&, const int &);//basx->string
 
 public:
         
