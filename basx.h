@@ -1,7 +1,9 @@
 #ifndef BASEX_H
 #define BASEX_H
 
-#include <string.h>
+#include <string>
+using std::string;
+
 template<class T>
 class basex{
 private:
