@@ -26,40 +26,30 @@ void basex<T>::changeBase(int b){
     base = b;
 }
 
+//OVERLOAD DEGLI OPERATORI
+
 template<class T>
 //base ritorno è quella di *this
 basex<T> basex<T>::operator+(const basex<T>& n)const{
-    return basex(raw_number + n.raw_number,base);
+    return basex( raw_number + n.raw_number ,base);
 }
 
 template<class T>
 //base ritorno è quella di *this
 basex<T> basex<T>::operator*(const basex<T>& n)const{
-    return basex<T>((raw_number + n.raw_number), base);
+    return basex<T>( raw_number * n.raw_number , base);
 }
 
 template<class T>
+//base ritorno è quella di *this
 basex<T> basex<T>::operator/(const basex<T>& n)const{
-//base ritorno è quella di *this
-//i due numeri sono entrambi in base 10
-T tot=raw_number/n.raw_number;
-basex<T> out;out.raw_number=tot;
-out.base=*(this).base;
-return out;
-//totale in base 10
-//return basex<T>((raw_number+n.raw_number),*(this).base)
+    return basex<T>( raw_number / n.raw_number ,base);
 }
 
 template<class T>
-basex<T> basex<T>::operator-(const basex<T>& n)const{
 //base ritorno è quella di *this
-//i due numeri sono entrambi in base 10
-T tot=raw_number-n.raw_number;
-basex<T> out;out.raw_number=tot;
-out.base=*(this).base;
-return out;
-//totale in base 10
-//return basex<T>((raw_number+n.raw_number),*(this).base)
+basex<T> basex<T>::operator-(const basex<T>& n)const{
+    return basex<T>( raw_number - n.raw_number , base);
 }
 
 
