@@ -145,6 +145,10 @@ void basex<T>::changeBase(int b){
     base = b;
 }
 
+template<class T>
+void basex<T>::Print(){
+    cout << "Raw: " << raw_number << " Base: " << base << " ->(" << basxToString(*this,6) << ")" << base << endl;
+}
 
 //////////////////////////////
 //   OP  O V E R L O A D    //
@@ -174,6 +178,12 @@ template<class T>
 basex<T> basex<T>::operator-(const basex<T>& n)const{
     return basex<T>( raw_number - n.raw_number , base);
 }
+
+/*template<class T>
+std::ostream& operator<<(std::ostream& os, const basex<T>& bx){
+    os << "Raw: " << bx.raw_number << " Base: " << bx.base << " ->(" << basex<T>::basxToString(bx,6) << ")" << bx.base;
+    return os;
+}*/
 
 
 
