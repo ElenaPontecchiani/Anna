@@ -2,17 +2,18 @@ CC=g++
 CCFLAGS=-Wall -march=x86-64
 PROG_NAME=prog
 
-prog :  main orario telefonata
-	$(CC) $(CCFLAGS) -o $(PROG_NAME) main.o orario.o telefonata.o
+prog :  main basx basxMath
+	$(CC) $(CCFLAGS) -o $(PROG_NAME) main.o basx.o basxMath.o
 
-main :  main.cpp orario.h
+main :  main.cpp basx.h
 	$(CC) $(CCFLAGS) -c main.cpp -o main.o
 
-orario: orario.cpp orario.h
-	$(CC) $(CCFLAGS) -c orario.cpp -o orario.o
+basx :	basx.cpp basx.h basxMath.h
+	$(CC) $(CCFLAGS) -c basx.cpp -o basx.o
 
-telefonata: telefonata.cpp telefonata.h orario.h
-	$(CC) $(CCFLAGS) -c telefonata.cpp -o telefonata.o
+basxMath :	basxMath.cpp basxMath.h
+		$(CC) $(CCFLAGS) -c basxMath.cpp -o basxMath.o
+
 
 clean:
 	rm *.o
