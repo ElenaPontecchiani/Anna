@@ -94,36 +94,28 @@ T basex<T>::stringToNum(const string& s,const int& base){
         //Se il numero è negativo, eseguo la stessa funzione senza il meno
         return -stringToNum( s.substr(1,string::npos), base);
 
+    int l = s.length(); //La chiamata a s.lenght e' ripetuta e onerosa
     double somma = 0;
-    int i = 0;
-    int deltaComma = 0;
+    int int_part = 0;
 
-    //Controllo se c'è una virgola, se c'è calcolo deltaComma
-    std::size_t found = s.find(",");
-    if (found == std::string::npos){
-        found = s.find(".");
-        if (found != string::npos)
-            deltaComma = found;
-    }
-    else
-        deltaComma = found - 1;
+    while(int_part < l && s[int_part] != '.' && s[int_part] != ',')
+        int_part++;
+
 
     //Sommo la parte intera del numero
-    while( i < s.length() && s[i] != ',' && s[i] != '.' ){
-        somma += charToInt(s[i]) * pow(base,s.length() - i-1 - deltaComma);
+    int i = 0;
+    while( i < l && s[i] != ',' && s[i] != '.' ){
+        somma += charToInt(s[i]) * pow(base, int_part - i - 1);
         i++;
     }
 
     //Se il numero aveva solo una parte intera finisco qua
-    if (i == s.length())
+    if (int_part == l)
         return somma;
 
-    //Salto la virgola
-    int comma_pos = i++;
-
-    //Sommo la parte decimale
-    while( i < s.length() ){
-        somma += charToInt(s[i]) * pow(base,-(i-comma_pos));
+    i = 1;
+    while(i < l - int_part){
+        somma += charToInt(s[l-i]) * pow(base,(-1*(l - int_part - i)) );
         i++;
     }
 
@@ -137,7 +129,7 @@ string basex<T>::basxToString(const basex& bx, const int &prec){
     string conv;
     //Se il numero è negativo, metto subito il meno davanti
     if(bx.raw_number < 0)
-        conv.append("-");
+        conv += "-";
 
 
     int i_part = abs(bx.raw_number);                //Parte intera del numero
@@ -146,12 +138,12 @@ string basex<T>::basxToString(const basex& bx, const int &prec){
     //Creo la stringa str e converto la parte intera del numero
     string i_str;
     while(i_part != 0){
-        //cout << i_part % bx.base; ??????????????????????????
         i_str += intToChar(i_part % bx.base);
-        i_part = i_part / 2;
-    }
+        i_part = i_part / bx.base;
+    }//SALITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     std::reverse(i_str.begin(),i_str.end()); //Devo invertire la stringa!!
 
+    cout << f_part;
     if (f_part > 0)
         i_str += ',';
 
@@ -169,7 +161,8 @@ string basex<T>::basxToString(const basex& bx, const int &prec){
         f_part -= digit * div;
     }
 
-    return i_str;
+    conv += i_str;
+    return conv;
 }
 
 

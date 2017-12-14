@@ -7,11 +7,18 @@ using std::endl;
 
 
 int main(){
-    basex<double> bx1(34.0,10);
-    basex<double> bx2("1A,4",16);
-    basex<double> bx3(bx1,2);
+    int bs;
+    std::string s;
+    //basex<double> bx1(10.0,10);
 
-    bx1.Print();
-    bx2.Print();
-    bx3.Print();
+    while(true){
+        cout << endl << "Numero: ";
+        cin >> s;
+        cout << "Base: ";
+        cin >> bs;
+        basex<double> bx1(s,bs);
+        bx1.Print();
+    }
 }
+
+//controllo x numeri inseriti
