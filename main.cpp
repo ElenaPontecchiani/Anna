@@ -10,6 +10,8 @@ int main(){
     int bs;
     std::string s;
     //basex<double> bx1(10.0,10);
+    basex<double> bx1(10.0,10);
+    cout << (string)bx1;
 
     while(true){
         cout << endl << "Numero: ";
@@ -17,7 +19,10 @@ int main(){
         cout << "Base: ";
         cin >> bs;
         basex<double> bx1(s,bs);
-        bx1.Print();
+        for(int i = 2; i < 25; i++){
+            bx1.changeBase(i);
+            bx1.Print();
+        }
     }
 }
 

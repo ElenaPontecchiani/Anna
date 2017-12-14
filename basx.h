@@ -42,13 +42,14 @@ public:
     basex& operator=(const basex&);//copia valore ma non base
 
     void Print();
-
+    void changeBase(int base);
 
     //Conversioni
-    //operator string()const; //Converto *this a stringa
+    operator string()const; //Converto *this a stringa
+    
     /*  Sarà necessario dichiarare dei metodi di conversione per i tipi che T può assumere
         = pigna in culo*/
-    void changeBase(int base);
+    
 
 //overload output
 
@@ -135,22 +136,28 @@ string basex<T>::basxToString(const basex& bx, const int &prec){
     int i_part = abs(bx.raw_number);                //Parte intera del numero
     double f_part = abs(bx.raw_number) - i_part;    //Parte decimale del numero
 
+    if (i_part == 0)    //Aggiungo uno zero in caso la parte intera sia zero
+        conv += "0";    
+
     //Creo la stringa str e converto la parte intera del numero
     string i_str;
     while(i_part != 0){
         i_str += intToChar(i_part % bx.base);
         i_part = i_part / bx.base;
-    }//SALITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    }
     std::reverse(i_str.begin(),i_str.end()); //Devo invertire la stringa!!
 
-    cout << f_part;
-    if (f_part > 0)
+    if (f_part > 0) //Se ho anche una parte decimale metto una virgola
         i_str += ',';
+    else            //Altrimenti ritorno già il mio numero
+        return conv + i_str;
 
     //Conversione stringa parte decimale
+
+    //Punti 2-3 algoritmo
     int den = pow(bx.base,prec);
-    f_part = (f_part * pow(10,approx10) ) //Punto 2 algoritmo
-            / (pow(10,approx10)/den);  //!!!!!! FUNZIA????????
+    f_part = (f_part * pow(10,approx10) ) 
+            / (pow(10,approx10)/den); 
 
     //punto 4 algoritmo
     int div,digit;
@@ -199,7 +206,7 @@ void basex<T>::changeBase(int b){
 
 template<class T>
 void basex<T>::Print(){
-    cout << "Raw: " << raw_number << " Base: " << base << " ->(" << basxToString(*this,6) << ")" << base << endl;
+    cout << "Raw: " << raw_number << "  (" << basxToString(*this,6) << ")" << base << endl;
 }
 
 //////////////////////////////
@@ -229,6 +236,11 @@ template<class T>
 //base ritorno è quella di *this
 basex<T> basex<T>::operator-(const basex<T>& n)const{
     return basex<T>( raw_number - n.raw_number , base);
+}
+
+template<class T>
+basex<T>::operator string() const{
+    return basxToString(*this,6);
 }
 
 /*template<class T>
