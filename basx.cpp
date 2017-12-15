@@ -170,6 +170,9 @@ basex basex::operator+(const basex& n)const{
     return basex( raw_number + n.raw_number ,base);
 }
 
+basex basex::operator+(const long double& ld)const{
+    return basex(raw_number + ld ,base);
+}
 
 //base ritorno è quella di *this
 basex basex::operator*(const basex& n)const{
@@ -188,16 +191,29 @@ basex basex::operator-(const basex& n)const{
     return basex( raw_number - n.raw_number , base);
 }
 
+//base resta quella di this
+basex& basex::operator=(const basex& bx){
+    raw_number = bx.raw_number;
+    return *this;
+}
+
+basex& basex::operator=(const long double& ld){
+    raw_number = ld;
+    return *this;
+}
+
 //#include <stdio.h>
 basex::operator string() const{
-    //string str_base;
-    //sprintf (*str_base, "%d", base);
-    return "(" + basxToString(*this,6) + ")"; //+ str_base;
+    return "(" + basxToString(*this,6) + ")" + std::to_string(base);
+}
+
+basex::operator long double()const{
+    return raw_number;
 }
 
 
 std::ostream& operator<<(std::ostream& os, const basex& bx){
-    os << "Raw: " << bx.raw_number << " Base: " << bx.base << " ->(" << basex::basxToString(bx,6) << ")" << bx.base;
+    os << (string)bx;
     return os;
 }
 

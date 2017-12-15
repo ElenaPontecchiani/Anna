@@ -6,7 +6,6 @@ using std::string;
 
 
 class basex{
-friend std::ostream& operator<<(std::ostream&, const basex&);
 private:
     long double raw_number;//solo tipi num e inbase 10
     unsigned int base;
@@ -32,20 +31,25 @@ public:
     basex operator/(const basex&)const;
     basex operator-(const basex&)const;
     basex& operator=(const basex&);//copia valore ma non base
+    
+    basex& operator=(const long double&);
+    basex operator+(const long double&)const;
+    
 
-    void Print();
+    void Print();   //Solo per debug
     void changeBase(int base);
 
     //Conversioni
     operator string()const; //Converto *this a stringa
-    
-    /*  Sarà necessario dichiarare dei metodi di conversione per i tipi che T può assumere
-        = pigna in culo*/
-    
-
-//overload output
-
+    operator long double()const; 
+    /*  Questo operatore di conversione fa si che tutte le operazioni
+     *  matematiche che accettano numeri in virgola mobile funzionino
+     *  anche con i numeri basex
+     */
 };
+
+
+std::ostream& operator<<(std::ostream& os, const basex& bx);
 
 
 
