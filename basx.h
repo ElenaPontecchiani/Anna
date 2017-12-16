@@ -11,11 +11,12 @@ private:
     unsigned int base;
     
     static int approx10;
+    static int approxx;
 
     static int charToInt(const char&);//conversione char->int
     static char intToChar(const int&);//conversione int->char
     static long double stringToNum(const string&,const int&);//string->T
-    static std::string basxToString(const basex&, const int &);//basx->string
+    static std::string basxToString(const basex&, const int & =4);//basx->string
 
 public:
         

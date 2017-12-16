@@ -36,7 +36,8 @@ basex::basex(const basex& bx, int b): raw_number(bx.raw_number), base(b){}   //C
 //////////////////////////////
 
 
-int basex::approx10 = 6;
+int basex::approx10 = 10;
+int basex::approxx = 10;
 
 
 long double basex::stringToNum(const string& s,const int& base){
@@ -76,7 +77,7 @@ long double basex::stringToNum(const string& s,const int& base){
 
 #include <algorithm>    // std::reverse
 
-string basex::basxToString(const basex& bx, const int &prec){
+string basex::basxToString(const basex& bx, const int &dec_num){
     string conv;
     //Se il numero è negativo, metto subito il meno davanti
     if(bx.raw_number < 0)
@@ -105,13 +106,13 @@ string basex::basxToString(const basex& bx, const int &prec){
     //Conversione stringa parte decimale
 
     //Punti 2-3 algoritmo
-    int den = pow(bx.base,prec);
+    int den = pow(bx.base,approxx);
     f_part = (f_part * pow(10,approx10) )
             / (pow(10,approx10)/den);
 
     //punto 4 algoritmo
     int div,digit;
-    for(int i = 1; i <= prec; i++){
+    for(int i = 1; i <= approxx and i <= dec_num; i++){
         div = (den/ pow(bx.base,i));
         digit = f_part / div;
         i_str += intToChar(digit);
@@ -156,7 +157,7 @@ void basex::changeBase(int b){
 
 
 void basex::Print(){
-    cout << "Raw: " << raw_number << "  (" << basxToString(*this,6) << ")" << base << endl;
+    cout << "Raw: " << raw_number << "  (" << basxToString(*this) << ")" << base << endl;
 }
 
 //////////////////////////////
@@ -215,7 +216,7 @@ basex& basex::operator=(const long double& ld){
 
 //#include <stdio.h>
 basex::operator string() const{
-    return "(" + basxToString(*this,6) + ")" + std::to_string(base);
+    return "(" + basxToString(*this) + ")" + std::to_string(base);
 }
 
 basex::operator long double()const{
