@@ -10,11 +10,9 @@ using std::endl;
 int main(){
     int bs;
     std::string s;
-    //basex<double> bx1(10.0,10);
-    basex bx1(2.0,10);
-    //cout << (string)bx1;
-    bx1 = bx1 + 4;
 
+    basex bx1(2.0,10);
+    bx1 = 2 * bx1; 
     cout << bx1;
 
     while(true){

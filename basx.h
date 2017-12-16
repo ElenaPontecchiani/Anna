@@ -32,9 +32,12 @@ public:
     basex operator-(const basex&)const;
     basex& operator=(const basex&);//copia valore ma non base
     
+    //Overload operatori con tipo float
     basex& operator=(const long double&);
     basex operator+(const long double&)const;
-    
+    basex operator*(const long double&)const;
+    basex operator/(const long double&)const;
+    basex operator-(const long double&)const;
 
     void Print();   //Solo per debug
     void changeBase(int base);

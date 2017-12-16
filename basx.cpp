@@ -179,16 +179,27 @@ basex basex::operator*(const basex& n)const{
     return basex( raw_number * n.raw_number , base);
 }
 
+basex basex::operator*(const long double& ld)const{
+    return basex(raw_number * ld ,base);
+}
 
 //base ritorno è quella di *this
 basex basex::operator/(const basex& n)const{
     return basex( raw_number / n.raw_number ,base);
 }
 
+basex basex::operator/(const long double& ld)const{
+    return basex(raw_number / ld ,base);
+}
+
 
 //base ritorno è quella di *this
 basex basex::operator-(const basex& n)const{
     return basex( raw_number - n.raw_number , base);
+}
+
+basex basex::operator-(const long double& ld)const{
+    return basex(raw_number - ld ,base);
 }
 
 //base resta quella di this
