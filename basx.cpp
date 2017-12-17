@@ -229,6 +229,17 @@ std::ostream& operator<<(std::ostream& os, const basex& bx){
     return os;
 }
 
+std::istream& operator>>(std::istream& is, basex& bx){
+    cout << "Numero: ";
+    std::string s;
+    is >> s;
+    cout << "Base: ";
+    unsigned int b;
+    is >> b;
+    bx = basex(s,b);
+    return is;
+}
+
 
 
 

@@ -8,22 +8,15 @@ using std::endl;
 
 
 int main(){
-    int bs;
-    std::string s;
 
     basex bx1(2.0,10);
     bx1 = 2 * bx1; 
-    cout << bx1;
+    cout << bx1 << endl << endl;
 
     while(true){
-        cout << endl << "Numero: ";
-        cin >> s;
-        cout << "Base: ";
-        cin >> bs;
-        basex bx1(s,bs);
+        cin >> bx1;
         for(int i = 2; i < 25; i++){
             bx1.changeBase(i);
-            //bx1.Print();
             cout << bx1 << endl;
         }
     }

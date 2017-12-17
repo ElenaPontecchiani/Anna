@@ -54,6 +54,7 @@ public:
 
 
 std::ostream& operator<<(std::ostream& os, const basex& bx);
+std::istream& operator>>(std::istream& is, basex& bx);
 
 
 

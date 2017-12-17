@@ -1,2 +1,5 @@
 .vscode/settings.json
 prog
+basx.o
+basxMath.o
+main.o
