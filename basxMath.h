@@ -28,6 +28,7 @@ T bxm::abs(const T& t){
     return t;
 }
 
+template<class T>
 T bxm::min(const T& a,const T& b){
   if (a < b)
     return a;

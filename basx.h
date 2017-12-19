@@ -40,7 +40,7 @@ public:
     basex operator/(const long double&)const;
     basex operator-(const long double&)const;
 
-    int getBase(){return base;}
+    void Copy(const basex&);
 
     void Print();   //Solo per debug
     void changeBase(int base);

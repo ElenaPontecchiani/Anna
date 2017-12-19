@@ -20,11 +20,18 @@ int main(){
             cout << bx1 << endl;
         }
     }*/
-    matrix<int> sandro(1,2);
+    
+    /*matrix<basex> sandro(1,2);
     cin >> sandro;
     cout << sandro;
     cout << endl;
-    cout << sandro*0.5;
+    cout << sandro*0.5;*/
+
+    std::string s = "100";
+    basex bx1;
+    cin >> bx1;
+    cout << bx1 << endl;
+    //cout << bx1.getBase();
 
 }
 //controllo x numeri inseriti

@@ -20,9 +20,7 @@ using std::string;
 basex::basex(const long double& t, int b): raw_number(t), base(b) {/*se base>1 ok altrementi err*/}
 
 
-basex::basex(const string& s,const int b):raw_number(stringToNum(s,b)), base(b) {
-  cout << base;
-}
+basex::basex(const string& s,const int b):raw_number(stringToNum(s,b)), base(b) {}
 
 
 basex::basex(const basex& bx,const int b): raw_number(bx.raw_number), base(b){}   //Costruttore da basex + cambio base
@@ -155,6 +153,12 @@ void basex::changeBase(int b){
 
 void basex::Print(){
     cout << "Raw: " << raw_number << "  (" << basxToString(*this) << ")" << base << endl;
+
+}
+
+void basex::Copy(const basex& bx){
+    base = bx.base;
+    raw_number = bx.raw_number; 
 }
 
 //////////////////////////////
@@ -233,6 +237,6 @@ std::istream& operator>>(std::istream& is, basex& bx){
     cout << "Base: ";
     unsigned int b;
     is >> b;
-    bx = basex(s,b);
+    bx.Copy(basex(s,b));
     return is;
 }

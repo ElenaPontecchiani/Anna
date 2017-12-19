@@ -25,7 +25,7 @@ public:
     matrix<T> operator+(const matrix<T>&)const;//somma tra due matrici
     //prodotto tra vettore riga e vettore colonna in vettori
     //trasposta i-riga diventa i col
-    matrix Trasposta()const;
+    /*matrix Trasposta()const;
     //coniugata: cambio segno pt img
     matrix Coniugata()const;
     //H-trasp:coniugata+trasposta
@@ -91,6 +91,7 @@ std::ostream& operator<<(std::ostream& os, const matrix<T>& m){
     }
     os << std::endl;
   }
+  return os;
 }
 
 template <class T>
