@@ -20,15 +20,12 @@ using std::string;
 basex::basex(const long double& t, int b): raw_number(t), base(b) {/*se base>1 ok altrementi err*/}
 
 
-basex::basex(const string& s,int b):raw_number(stringToNum(s,b)), base(b) {
-    //se base>1 ok altrementi err
-    //controllo num<0
-    //chiamata string->T
+basex::basex(const string& s,const int b):raw_number(stringToNum(s,b)), base(b) {
+  cout << base;
 }
-//conversione da string a base x
 
 
-basex::basex(const basex& bx, int b): raw_number(bx.raw_number), base(b){}   //Costruttore da basex + cambio base
+basex::basex(const basex& bx,const int b): raw_number(bx.raw_number), base(b){}   //Costruttore da basex + cambio base
 
 
 //////////////////////////////
@@ -239,10 +236,3 @@ std::istream& operator>>(std::istream& is, basex& bx){
     bx = basex(s,b);
     return is;
 }
-
-
-
-
-
-
-

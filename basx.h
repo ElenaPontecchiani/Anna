@@ -9,7 +9,7 @@ class basex{
 private:
     long double raw_number;//solo tipi num e inbase 10
     unsigned int base;
-    
+
     static int approx10;
     static int approxx;
 
@@ -19,12 +19,12 @@ private:
     static std::string basxToString(const basex&, const int & =4);//basx->string
 
 public:
-        
+
     //Costruttori
     basex(const long double& =0.0,int=10); //non eseguo conversioni
-    basex(const string&,int=10);  //Costruttore attraverso una stringa
+    basex(const string&,const int =10);  //Costruttore attraverso una stringa
                                     //Funge anche da conversione implicita da stringa
-    basex(const basex&, int=10);  //Costruttore da basex + cambio base
+    basex(const basex&,const int =10);  //Costruttore da basex + cambio base
 
     //Overload di operatori, base ritorno operando più a sx, this
     basex operator+(const basex&)const;
@@ -32,7 +32,7 @@ public:
     basex operator/(const basex&)const;
     basex operator-(const basex&)const;
     basex& operator=(const basex&);//copia valore ma non base
-    
+
     //Overload operatori con tipo float
     basex& operator=(const long double&);
     basex operator+(const long double&)const;
@@ -40,12 +40,14 @@ public:
     basex operator/(const long double&)const;
     basex operator-(const long double&)const;
 
+    int getBase(){return base;}
+
     void Print();   //Solo per debug
     void changeBase(int base);
 
     //Conversioni
     operator string()const; //Converto *this a stringa
-    operator long double()const; 
+    operator long double()const;
     /*  Questo operatore di conversione fa si che tutte le operazioni
      *  matematiche che accettano numeri in virgola mobile funzionino
      *  anche con i numeri basex

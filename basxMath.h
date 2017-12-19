@@ -11,6 +11,9 @@ namespace bxm{
     template<class T>
     T abs(const T& t);
 
+    template<class T>
+    T min(const T& a,const T& b);
+
     //Mi ritorna il numero di cifre dopo la virgola
     /*int digitsAfterComma(const double& d);*/
 
@@ -23,6 +26,12 @@ T bxm::abs(const T& t){
     if(t < 0)
         return t*-1;
     return t;
+}
+
+T bxm::min(const T& a,const T& b){
+  if (a < b)
+    return a;
+  return b;
 }
 
 
