@@ -17,7 +17,8 @@ private:
     int l;
     T* raw_matrix;//array che tiene conto el
 
-    static T* copyArr(const matrix<T>& m);
+    template<class U>
+    static T* copyArr(const matrix<U>& m);
     template<class U>
     static T VectProd(const matrix<T>&m1,int row, const matrix<U>&m2, int col);
 public:
@@ -26,16 +27,26 @@ public:
     ~matrix();
     matrix<T> operator*(const T&)const;//prodotto con scalare
 
+    matrix<T> mathOp(double (*function)(double));
+    matrix<T> mathOp(double (*function)(double,double),const double&);
+
     template <class U>
     matrix<T> operator*(const matrix<U>&)const;
 
     //bool sameDim(matrix<U>)
     T& operator[](const int&)const;
 
+    /*template <class U>
+    matrix<T>& operator=(const matrix<U>&);*/
+
     template <class U>
     matrix<T> operator+(const matrix<U>&)const;//somma tra due matrici
+
     template <class U>
     matrix<T> operator-(const matrix<U>&)const;
+
+    template <class U>
+    bool operator==(const matrix<U>& m)const;
     //prodotto tra vettore riga e vettore colonna in vettori
     //trasposta i-riga diventa i col
     matrix<T> Trasposta()const;
@@ -55,10 +66,11 @@ std::ostream& operator<<(std::ostream& os, const matrix<T>& m);
 //////////////////////////////
 
 template <class T>
-T* matrix<T>::copyArr(const matrix<T>& m){
+template <class U>
+T* matrix<T>::copyArr(const matrix<U>& m){
   T* t_arr = new T[m.h*m.l];
   for(int i = 0; i < m.h * m.l; i++)
-    t_arr[i] = m.raw_matrix[i];
+    t_arr[i] = (T)m.raw_matrix[i];
   return t_arr;
 }
 
@@ -66,15 +78,11 @@ template <class T>
 template <class U>
 T matrix<T>::VectProd(const matrix<T>&m1,int row, const matrix<U>&m2, int col){
   T sum = 0;
-  std::cout << "R>" << row << "\n";
-  std::cout << "C>" << col << "\n";
   for(int i = 0; i < m1.l; i++)
-      {sum += m1[i+m1.h*row] * m2[col+m2.l*i];
-        std::cout << "Sel1>" << i+m1.h*row << "\n";
-        std::cout << "Sel2>" << col+m2.l*i << "\n\n";
-      }
+      sum += m1[i+m1.l*row] * m2[col+m2.l*i];
   return sum;
 }
+
 
 
 
@@ -171,6 +179,34 @@ matrix<T> matrix<T>::operator*(const matrix<U>& m)const{
   return temp;
 }
 
+template <class T>
+template <class U>
+bool matrix<T>::operator==(const matrix<U>& m)const{
+  if(l != m.l || h != m.h )
+    return false;
+  int i = 0;
+  while(i < l*h){
+    if((*this)[i] != m[i])
+      return false;
+    i++;
+  }
+  return true;
+}
+
+/*template <class T>
+template <class U>
+matrix<T>& matrix<T>::operator=(const matrix<U>& m){
+    if (this == &m)
+        return *this;
+    //T* p = raw_matrix;
+    //delete[] p;
+    //l = m.l;
+    //h = m.h;
+    //raw_matrix = copyArr(m);
+    return (*this);
+}
+*/
+
 
 //////////////////////////////
 //   O P E R A Z I O N I    //
@@ -185,6 +221,21 @@ matrix<T> matrix<T>::Trasposta()const{
   return trans;
 }
 
+template <class T>
+matrix<T> matrix<T>::mathOp(double (*function)(double)){
+    matrix<T> temp(h,l);
+    for(int i = 0; i < l*h; i++)
+        temp[i] = (*function)((*this)[i]);
+    return temp;
+}
+
+template <class T>
+matrix<T> matrix<T>::mathOp(double (*function)(double,double),const double& d){
+    matrix<T> temp(h,l);
+    for(int i = 0; i < l*h; i++)
+        temp[i] = (*function)((*this)[i],d);
+    return temp;
+}
 
 
 

@@ -32,7 +32,8 @@ public:
     basex operator/(const basex&)const;
     basex operator-(const basex&)const;
     //basex& operator=(const basex&);//copia valore ma non base
-
+    basex& operator+=(const basex&);
+    bool operator==(const basex&)const;
     //Overload operatori con tipo float
     //basex& operator=(const long double&);
     basex operator+(const long double&)const;

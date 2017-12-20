@@ -163,6 +163,10 @@ void basex::Print(){
 
 
 
+bool basex::operator==(const basex& bx)const{
+    return (raw_number == bx.raw_number);
+}
+
 //base ritorno è quella di *this
 basex basex::operator+(const basex& n)const{
     return basex( raw_number + n.raw_number ,base);
@@ -171,6 +175,12 @@ basex basex::operator+(const basex& n)const{
 basex basex::operator+(const long double& ld)const{
     return basex(raw_number + ld ,base);
 }
+
+basex& basex::operator+=(const basex& bx){
+  *this = *this + bx;
+  return *this;
+}
+
 
 //base ritorno è quella di *this
 basex basex::operator*(const basex& n)const{
