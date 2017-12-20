@@ -156,10 +156,6 @@ void basex::Print(){
 
 }
 
-void basex::Copy(const basex& bx){
-    base = bx.base;
-    raw_number = bx.raw_number; 
-}
 
 //////////////////////////////
 //   OP  O V E R L O A D    //
@@ -205,7 +201,7 @@ basex basex::operator-(const long double& ld)const{
 }
 
 //base resta quella di this
-basex& basex::operator=(const basex& bx){
+/*basex& basex::operator=(const basex& bx){
     raw_number = bx.raw_number;
     return *this;
 }
@@ -213,7 +209,7 @@ basex& basex::operator=(const basex& bx){
 basex& basex::operator=(const long double& ld){
     raw_number = ld;
     return *this;
-}
+}*/
 
 //#include <stdio.h>
 basex::operator string() const{
@@ -237,6 +233,6 @@ std::istream& operator>>(std::istream& is, basex& bx){
     cout << "Base: ";
     unsigned int b;
     is >> b;
-    bx.Copy(basex(s,b));
+    bx = basex(s,b);
     return is;
 }
