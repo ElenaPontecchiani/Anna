@@ -6,19 +6,28 @@
 
 template<class T>
 class matrix{
+/*  Cosa vuol dire sta cosa?
+ *  Tutte le istanze di questi overload sono amiche della classe matrice,
+ *  indipendentemente dal tipo U che matrix contiene. 
+ */
 template <class U>
   friend std::istream& operator>>(std::istream& is, matrix<U>& m);
 template <class U>
   friend std::ostream& operator<<(std::ostream& os, const matrix<U>& m);
-template <class U>  friend class matrix;
-
+  
 private:
     int h;
     int l;
     T* raw_matrix;//array che tiene conto el
 
+    //Fa una deep copy di un array (raw_matrix) da una matrice m, e ne torna
+    //il puntatore
     static T* copyArr(const matrix<T>& m);
+
+    //Esegue il prodotto vettoriale fra due vettori estrapolati da matrici
+    //sulla riga row e colonna col
     static T VectProd(const matrix<T>&m1,int row, const matrix<T>&m2, int col);
+
 public:
     //Ridefinizione dei big 3 ££$$$€€€€
     matrix(const int& =1,const int& =1);//inizializzato con l=1,h=1
@@ -27,7 +36,7 @@ public:
 
     //Operatori Matematici fra matrici
     matrix<T>& operator=(const matrix<T>&);
-    matrix<T> operator+(const matrix<T>&)const;//somma tra due matrici
+    matrix<T> operator+(const matrix<T>&)const;
     matrix<T> operator-(const matrix<T>&)const;
     matrix<T> operator*(const matrix<T>&)const;
 
@@ -46,6 +55,8 @@ public:
     bool operator==(const matrix<T>& m)const;
 
     //Operatore di conversione fra vari tipi di matrice
+    //Il template class U è necessario perchè voglio rendere
+    //la conversione disponibile con ogni tipo di matrice
     template <class U>
     operator matrix<U>();
 
