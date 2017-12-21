@@ -9,8 +9,11 @@ using std::endl;
 
 
 int main(){
-    matrix<int> sandro(2,2);
-    cin >> sandro;
+    matrix<double> sandro(2,2);
+    matrix<int> m(2,2);
+    cin >> sandro >> m;
+    sandro = sandro + m;
+    cout << sandro;
     cout << endl;
     cout << sandro.mathOp(pow,2);
 

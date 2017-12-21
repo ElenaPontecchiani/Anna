@@ -17,40 +17,37 @@ private:
     int l;
     T* raw_matrix;//array che tiene conto el
 
-    template<class U>
-    static T* copyArr(const matrix<U>& m);
-    template<class U>
-    static T VectProd(const matrix<T>&m1,int row, const matrix<U>&m2, int col);
+    static T* copyArr(const matrix<T>& m);
+    static T VectProd(const matrix<T>&m1,int row, const matrix<T>&m2, int col);
 public:
+    //Ridefinizione dei big 3 ££$$$€€€€
     matrix(const int& =1,const int& =1);//inizializzato con l=1,h=1
     matrix(const matrix<T>&);//costruttore di copia
     ~matrix();
-    matrix<T> operator*(const T&)const;//prodotto con scalare
 
+    //Operatori Matematici fra matrici
+    matrix<T>& operator=(const matrix<T>&);
+    matrix<T> operator+(const matrix<T>&)const;//somma tra due matrici
+    matrix<T> operator-(const matrix<T>&)const;
+    matrix<T> operator*(const matrix<T>&)const;
+
+    //Operazioni generali su matrici
+    matrix<T> Trasposta()const;
+
+    //Funzioni scalari che si applicano elemento per elemento
+    matrix<T> operator*(const T&)const;//prodotto con scalare
     matrix<T> mathOp(double (*function)(double));
     matrix<T> mathOp(double (*function)(double,double),const double&);
 
+    //Operatore di selezione di un elemento nell'array
+    T& operator[](const int&)const;    
+
+    //Operatore di ugualianza
+    bool operator==(const matrix<T>& m)const;
+
+    //Operatore di conversione fra vari tipi di matrice
     template <class U>
-    matrix<T> operator*(const matrix<U>&)const;
-
-    //bool sameDim(matrix<U>)
-    T& operator[](const int&)const;
-
-    /*template <class U>
-    matrix<T>& operator=(const matrix<U>&);*/
-
-    template <class U>
-    matrix<T> operator+(const matrix<U>&)const;//somma tra due matrici
-
-    template <class U>
-    matrix<T> operator-(const matrix<U>&)const;
-
-    template <class U>
-    bool operator==(const matrix<U>& m)const;
-    //prodotto tra vettore riga e vettore colonna in vettori
-    //trasposta i-riga diventa i col
-    matrix<T> Trasposta()const;
-    //H-trasp:coniugata+trasposta
+    operator matrix<U>();
 
 };
 
@@ -66,8 +63,7 @@ std::ostream& operator<<(std::ostream& os, const matrix<T>& m);
 //////////////////////////////
 
 template <class T>
-template <class U>
-T* matrix<T>::copyArr(const matrix<U>& m){
+T* matrix<T>::copyArr(const matrix<T>& m){
   T* t_arr = new T[m.h*m.l];
   for(int i = 0; i < m.h * m.l; i++)
     t_arr[i] = (T)m.raw_matrix[i];
@@ -75,8 +71,7 @@ T* matrix<T>::copyArr(const matrix<U>& m){
 }
 
 template <class T>
-template <class U>
-T matrix<T>::VectProd(const matrix<T>&m1,int row, const matrix<U>&m2, int col){
+T matrix<T>::VectProd(const matrix<T>&m1,int row, const matrix<T>&m2, int col){
   T sum = 0;
   for(int i = 0; i < m1.l; i++)
       sum += m1[i+m1.l*row] * m2[col+m2.l*i];
@@ -109,7 +104,7 @@ matrix<T>::~matrix(){
 template<class T>
 std::istream& operator>>(std::istream& is, matrix<T>& m){
   for(int i=0; i < m.h * m.l; i++)
-    is >> m[i];    //bool sameDim(matrix<U>)
+    is >> m[i];    
   return is;
 }
 
@@ -123,6 +118,7 @@ std::ostream& operator<<(std::ostream& os, const matrix<T>& m){
   }
   return os;
 }
+
 
 template <class T>
 matrix<T> matrix<T>::operator*(const T& n)const{
@@ -140,8 +136,7 @@ T& matrix<T>::operator[](const int& i)const{
 
 #include "basxMath.h"
 template <class T>
-template <class U>
-matrix<T> matrix<T>::operator+(const matrix<U>& m)const{
+matrix<T> matrix<T>::operator+(const matrix<T>& m)const{
   if(!(l == m.l && h == m.h)){
     //Throw///
     std::cout << "Non sommabile vezz" << std::endl;
@@ -153,8 +148,7 @@ matrix<T> matrix<T>::operator+(const matrix<U>& m)const{
 }
 
 template <class T>
-template <class U>
-matrix<T> matrix<T>::operator-(const matrix<U>& m)const{
+matrix<T> matrix<T>::operator-(const matrix<T>& m)const{
   if(!(l == m.l && h == m.h)){
     //Throw///
     std::cout << "Non sommabile vezz" << std::endl;
@@ -166,8 +160,7 @@ matrix<T> matrix<T>::operator-(const matrix<U>& m)const{
 }
 
 template <class T>
-template <class U>
-matrix<T> matrix<T>::operator*(const matrix<U>& m)const{
+matrix<T> matrix<T>::operator*(const matrix<T>& m)const{
   if(l != m.h){
     std::cout << "VEzzzzzzzzz";
   }
@@ -180,8 +173,7 @@ matrix<T> matrix<T>::operator*(const matrix<U>& m)const{
 }
 
 template <class T>
-template <class U>
-bool matrix<T>::operator==(const matrix<U>& m)const{
+bool matrix<T>::operator==(const matrix<T>& m)const{
   if(l != m.l || h != m.h )
     return false;
   int i = 0;
@@ -193,19 +185,27 @@ bool matrix<T>::operator==(const matrix<U>& m)const{
   return true;
 }
 
-/*template <class T>
-template <class U>
-matrix<T>& matrix<T>::operator=(const matrix<U>& m){
+template <class T>
+matrix<T>& matrix<T>::operator=(const matrix<T>& m){
     if (this == &m)
         return *this;
-    //T* p = raw_matrix;
-    //delete[] p;
-    //l = m.l;
-    //h = m.h;
-    //raw_matrix = copyArr(m);
+    T* p = raw_matrix;
+    delete[] p;
+    l = m.l;
+    h = m.h;
+    raw_matrix = copyArr(m);
     return (*this);
 }
-*/
+
+template <class T>
+template <class U>
+matrix<T>::operator matrix<U>(){
+  matrix<U> temp(h,l);
+  for(int i = 0; i < l*h; i++)
+    temp[i] = (*this)[i];
+  return temp;
+}
+
 
 
 //////////////////////////////
