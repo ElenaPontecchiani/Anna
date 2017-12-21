@@ -42,6 +42,7 @@ public:
 
     //Operazioni generali su matrici
     matrix<T> Trasposta()const;
+    matrix<T> Gauss()const;
 
     //Funzioni scalari che si applicano elemento per elemento
     matrix<T> operator*(const T&)const;//prodotto con scalare
@@ -248,6 +249,31 @@ matrix<T> matrix<T>::mathOp(double (*function)(double,double),const double& d){
     return temp;
 }
 
+template <class T>
+matrix<T> matrix<T>::Gauss()const{
+  matrix<T> temp(*this);
+  for(int i = 0; i < h - 1; i++)            
+    for(int k = i + 1 ; k < h; k++)
+    {
+      T t = temp[k*l+i] / temp[i*l+i];
+      for(int j = 0; j <= h; j++)
+        temp[k*l+j] = temp[k*l+j] - t * temp[i*l+j];
+  }
+
+  for(int i = 0; i < h; i++){
+    int k = 0;
+    while(temp[i*l+k] == 0 && k < l)
+      k++;
+    if(k != l){
+      T dvs = temp[i*l+k];
+      for(int j = k; j < l; j++)
+        temp[i*l+j] = temp[i*l+j]/dvs;
+    }
+  }
+  
+
+  return temp;
+}
 
 
 

@@ -9,13 +9,10 @@ using std::endl;
 
 
 int main(){
-    matrix<double> sandro(2,2);
-    matrix<int> m(2,2);
-    cin >> sandro >> m;
-    sandro = sandro + m;
-    cout << sandro;
-    cout << endl;
-    cout << sandro.mathOp(pow,2);
+    matrix<double> sandro(3,3);
+    cin >> sandro;
+    cout << sandro << endl;
+    cout << sandro.Gauss() << endl;
 
 
 
