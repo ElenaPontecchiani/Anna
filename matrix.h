@@ -62,13 +62,15 @@ public:
     T& operator[](const int&)const;    
 
     //Operatore di ugualianza
-    bool operator==(const matrix<T>& m)const;
+    bool operator==(const matrix<T>&)const;
 
     //Operatore di conversione fra vari tipi di matrice
     //Il template class U è necessario perchè voglio rendere
     //la conversione disponibile con ogni tipo di matrice
     template <class U>
     operator matrix<U>();
+
+    bool dimensions(const matrix<T>&)const;
 
 };
 
@@ -353,8 +355,13 @@ matrix<T> matrix<T>::GaussJordan()const{
 
   return temp;
 }
-  
 
+
+
+template <class T>  
+bool matrix<T>::dimensions(const matrix<T>& m)const{
+  return (h==m.h && l==m.l);
+}
 
 
 

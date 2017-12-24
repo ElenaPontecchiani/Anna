@@ -1,62 +1,101 @@
-#ifndef SQUAREMATRIX_H
-#define SQUAREMATRIX_H
+#ifndef MATRIX_H
+#define MATRIX_H
 
-#include "matrix.h" //de ve includere base o il contrario?
+#include "matrix.h"
+
+
 
 template<class T>
-class square_matrix public:matrix{
-private: 
+class square_matrix: public matrix<T>{
+private: //h,l,rawmatrix,copyarr vectProd
+
+
+
 public:
+    square_matrix(const int & =1);//ridef costruttore con 1 solo parametro in cui chiamo anche costruttore matrix
+    square_matrix(const square_matrix<T>&);//inizializzato con altra square matrix
+    
+    //~square_matrix();//ridef distruttore non serve?
 
-//costruttori da ridefinire???
+//Operatori matematici-->no controllo chiamo direttamente quello genitore
+//da tenere tutti?Prodotto con scalare ,[],+,-,*,==,=,conv U
+    
+//trasposta rimane uguale, gauss anche:non ridef
 
 
-//ottiene tutti quelli genitore+ propri
-/*metodi propri:
- -inverso-->ok
--calcolo determinante-->messo
--elevazione a potenza(? da fare se già messa in passaggio f?)
--matrice simmetrica--> trasposta di sè stessa messa
+//ridef dimensions-->controllo solo su una
+    bool dimensions(const square_matrix<T>&)const; 
 
-costruttori rimangono uguali? non servono controlli
-+-/* sono uguali o vanno ridef
+
+//-elevazione a potenza(? da fare se già messa in passaggio f?) 
+/*
 aggiungere metodo eventualmente staico per affiancare alla matrice la sua diagonale
 per calcolo inversa
 */
+    matrix<T> Composizione();//ritorna una matrice che affianca a quella quadrata la sua diagonale-->non quadrata!!
+    
+    square_matrix<T> Diagonale()const;//ritorna matrice diagonale(1 su diag,0) con =dim matrice invocazione
 
-matrix<T> Diagonale()const;//ritorna matrice diagonale con =dim matrice invocazione
+    square_matrix<T>Inversa()const;
 
-matrix<T> Composizione()const;//ritorna una matrice che affianca a quella quadrata la sua diagonale
+    bool Symmetric()const;//se è trasposta a se stessa
 
-matrix<T>Inversa()const;
-
-bool Symmetric()const;//non esistono parametri solo ogg inv. se è trasposta a se stessa
-
-T Determinante ()const;//non esistono parametri solo ogg inv.
+    T Determinante ()const;//non esistono parametri solo ogg inv.
 };
 
 
 
 
 
+
+
+
+
+
+
+//////////////////////////////
+//  C O S T R U T T O R I   //
+//////////////////////////////
+
+template <class T>
+square_matrix<T>::square_matrix(const int& dim):
+    h(dim),l(dim),raw_matrix(new T[ldim*dim]){}
+//o mettere così:
+/*
+square_matrix<T>::square_matrix(const int& dim){
+      (*this)=matrix<T>(dim,dim,new T[ldim*dim]);
+    }  
+*/
+
+//ok?
+template <class T>
+square_matrix<T>::square_matrix(const square_matrix<T>& m)
+    :h(m.h),l(m.l),raw_matrix(copyArr(m)){}
+
+
+
+//////////////////////////////
+//   O P E R A Z I O N I    //
+//////////////////////////////
+
 template<class T>
 T square_matrix<T>::Determinante()const{
 //l==h el su diag primnc i==j su secondaria dim-j?
-int s1=0;
+int s=0;
 for(int i=0;i<l;i++){
-    s1+=raw_number[i+i*l];//seleziona el su diagonale principale
+    s+=raw_matrix[i+i*l];//seleziona el su diagonale principale
 }
 //int s2=0;//per el su secondaria
 for(int i=0;i<l;i++){
-    s1-=raw_number[(i+1)*(l-1)];//seleziona el su diagonale secondaria
+    s-=raw_matrix[(i+1)*(l-1)];//seleziona el su diagonale secondaria
 }
-return s1;
+return s;
 }
 
 template<class T>
 bool square_matrix<T>::Symmetric()const{
 matrix<T> m=(*this).Trasposta;
-return m==*this;//restituisce se matrice e uguale a se stessa
+return m==(*this);//restituisce se matrice e uguale a se stessa
 }
 
 template<class T>
@@ -74,9 +113,14 @@ for(int i=1;i<l*h;i++){
 return m;
 }
 
+template<class T>
+matrix<T> square_matrix<T>::Inversa()const{
+return (*this.Composizine()).GaussJordan;
+}
+
 
 template<class T>
-matrix<T> square_matrix<T>::Accosta()const{
+matrix<T> square_matrix<T>::Composizione(){
 matrix<T> Diag=*this.Diagonale();
 matrix<T> m(h,2*l);//lung doppia, matrice di out
 for(int j=0;j<h;j++){
@@ -94,39 +138,10 @@ m.raw_matrix[j*2*l+i+l-1]=Diag.raw_matrix[j*l+i];}//assegnazione ultime celle
 return m;
 }
 
-template<class T>
-matrix<T> square_matrix<T>::Inversa()const{
-return (*this.Accosta()).Gauss;
+
+template <class T>  
+bool square_matrix<T>::dimensions(const square_matrix<T>& m)const{
+  return (h==m.h);//basta controllare una dim
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif
