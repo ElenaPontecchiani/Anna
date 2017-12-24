@@ -27,6 +27,11 @@ public:
 
     T Determinante()const;//messi solo el diagonale principale
   
+    diagonal_matrix<T> operator*(const diagonal_matrix<T>&)const;//ridef perchè prodotto riga per colonna in matr diagonali è prodotto tra el delle diag
+
+//ridef riga per colonna è solo priditto ra el delle diagonale
+
+
 };
 
 
@@ -53,21 +58,21 @@ bool diagonal_matrix<T>::onDiagonal(int dim,int i)const{// su diag princ se è p
 
 template <class T>
 diagonal_matrix<T>::diagonal_matrix(const int& dim):
-    *this(square_matrix<T>(dim,dim)){} //messe solo dim
+    *this(square_matrix<T>(dim,dim)){
+    } 
 
 
-//giusto?
+//giusto????????????????????
 template <class T>
 diagonal_matrix<T>::diagonal_matrix(const int& dim,const T[]): *this(square_matrix<T>(dim,dim)){
-    int j=0;//per segnare el da mettere su diag    
-    for(int i=0;i<dim^2;i++){
-      if(i==j){
-        j+=dim+1;//slittoprox el 
-        raw_matrix[i]=T[i];
+   
+      for(int i=0;i<dim^2;i++){
+        if(onDiagonal(dim,i)){//se è sulla diagonale mettere el?
+          cin>>raw_matrix[i];
+        }
+        else{raw_matrix[i]=0;}
       }
-      else {T[i]=0;}
 
-    }
 }
 
 
@@ -88,7 +93,7 @@ diagonal_matrix<T> diagonal_matrix<T>::operator+(const diagonal_matrix<T>& m)con
   }
   diagonal_matrix<T> temp(h,l);
   for(int i = 0; i < l*h; i++){
-    if(onDiagonal(h,i))
+    if(onDiagonal(h^2,i))
     {temp[i] = raw_matrix[i]+m.raw_matrix[i];}
     else{temp[i] =0;}
 }
@@ -101,7 +106,7 @@ matrix<T> matrix<T>::operator-(const matrix<T>& m)const{
     //Throw///
     std::cout << "Non sommabile vezz" << std::endl;
   }
-  matrix<T> temp(h,l);
+  matrix<T> temp(h^2,l);
   ffor(int i = 0; i < l*h; i++){
     if(onDiagonal(h,i))
     {temp[i] = raw_matrix[i]-m.raw_matrix[i];}
@@ -120,14 +125,27 @@ diagonal_matrix<T> diagonal_matrix<T>::operator*(const T& t)const{
   }
   diagonal_matrix<T> temp(h,l);
   for(int i = 0; i < l*h; i++){
-    if(onDiagonal(h,i))
+    if(onDiagonal(h^2,i))
     {temp[i] =raw_matrix[i]*t;}
     else{temp[i] =0;}
 }
   return temp;
 }
 
-//ridef costruttore copia!!
+
+template <class T>
+diagonal_matrix<T> diagonal_matrix<T>::operator*(const diagonal_matrix<T>& m)const{
+  iff(!(*this.dimensions(m))){//il metodo si può invocare anche qui tanto sono quadrate
+    std::cout << "dim sbagliate";
+  }
+  diagonal_matrixmatrix<T> temp(h,h);
+  for(int i = 0; i < h^2; i++){
+    if(onDiagonal(h^2,i))
+    {temp[i] =raw_matrix[i]*m.raw_matrix[i];}
+    else {temp[i] =0;}
+    }
+  return temp;
+}
 
 
 //////////////////////////////
@@ -143,12 +161,6 @@ for(int i=0;i<l;i++){
 }
 return s;
 }
-
-
-
-
-
-
 
 
 

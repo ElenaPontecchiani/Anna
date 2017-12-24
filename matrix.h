@@ -160,7 +160,7 @@ T& matrix<T>::operator[](const int& i)const{
 #include "basxMath.h"
 template <class T>
 matrix<T> matrix<T>::operator+(const matrix<T>& m)const{
-  if(!(l == m.l && h == m.h)){
+  if(!(*this).dimensions(m)){
     //Throw///
     std::cout << "Non sommabile vezz" << std::endl;
   }
@@ -172,7 +172,7 @@ matrix<T> matrix<T>::operator+(const matrix<T>& m)const{
 
 template <class T>
 matrix<T> matrix<T>::operator-(const matrix<T>& m)const{
-  if(!(l == m.l && h == m.h)){
+  if(!(*this).dimensions(m)){
     //Throw///
     std::cout << "Non sommabile vezz" << std::endl;
   }
