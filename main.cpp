@@ -9,10 +9,17 @@ using std::endl;
 
 
 int main(){
-    matrix<double> sandro(3,3);
+    int a;
+    int b;
+    cin >> a;
+    cin >> b;
+    matrix<double> sandro(a,b);
     cin >> sandro;
     cout << sandro << endl;
-    cout << sandro.Gauss() << endl;
+    //sandro.divRow(0,2);
+    //cout << sandro << endl;
+    cout << sandro.GaussJordan() << endl;
+    
 
 
 

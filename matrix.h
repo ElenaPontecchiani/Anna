@@ -28,6 +28,7 @@ private:
     //sulla riga row e colonna col
     static T VectProd(const matrix<T>&m1,int row, const matrix<T>&m2, int col);
 
+
 public:
     //Ridefinizione dei big 3 ££$$$€€€€
     matrix(const int& =1,const int& =1);//inizializzato con l=1,h=1
@@ -43,6 +44,14 @@ public:
     //Operazioni generali su matrici
     matrix<T> Trasposta()const;
     matrix<T> Gauss()const;
+    matrix<T> GaussJordan()const;
+
+    //Metodi utili per l'el. di Gauss
+    void swap(int r1, int r2);
+    void divRow(int r, T coeff);
+    int maxCoeff(int now_row, int now_col)const;
+    void subRow(int r1,int r2, T coeff =1);
+    void approxZero();
 
     //Funzioni scalari che si applicano elemento per elemento
     matrix<T> operator*(const T&)const;//prodotto con scalare
@@ -250,30 +259,101 @@ matrix<T> matrix<T>::mathOp(double (*function)(double,double),const double& d){
 }
 
 template <class T>
-matrix<T> matrix<T>::Gauss()const{
-  matrix<T> temp(*this);
-  for(int i = 0; i < h - 1; i++)            
-    for(int k = i + 1 ; k < h; k++)
-    {
-      T t = temp[k*l+i] / temp[i*l+i];
-      for(int j = 0; j <= h; j++)
-        temp[k*l+j] = temp[k*l+j] - t * temp[i*l+j];
-  }
-
-  for(int i = 0; i < h; i++){
-    int k = 0;
-    while(temp[i*l+k] == 0 && k < l)
-      k++;
-    if(k != l){
-      T dvs = temp[i*l+k];
-      for(int j = k; j < l; j++)
-        temp[i*l+j] = temp[i*l+j]/dvs;
+void matrix<T>::swap(int r1, int r2){
+  if (r1 != r2){
+    T temp;
+    for(int c = 0; c < l; c++){
+      temp = (*this)[r1*l+c];
+      (*this)[r1*l+c] = (*this)[r2*l+c];
+      (*this)[r2*l+c] = temp;
     }
   }
-  
+}
+
+template <class T>
+void matrix<T>::divRow(int r, T coeff){
+  for(int c = 0; c < l; c++)
+    if((*this)[r*l+c] != 0)  
+      (*this)[r*l+c] = (*this)[r*l+c]/coeff;
+  /*if (r == 1)
+    std::cout << "Riga: " << r << " Coeff: " << coeff << std::endl;*/
+}
+
+template <class T>
+int matrix<T>::maxCoeff(int now_row, int now_col)const{
+  int max = now_row;
+  for(int r = now_row + 1; r < h; r++)
+    if( (*this)[r*l+now_col] > (*this)[max*l+now_col])
+      max = r;
+  return max;
+}
+
+template <class T>
+void matrix<T>::subRow(int r1, int r2, T coeff){
+  for(int c = 0; c < l; c++)
+    (*this)[r1*l+c] = (*this)[r1*l+c] - (*this)[r2*l+c] * coeff; 
+}
+
+
+
+template <class T>
+matrix<T> matrix<T>::Gauss()const{
+  matrix<T> temp(*this);
+
+  int c = 0;
+  for(int r = 0; r < h && c < l; r++){
+    if(temp[r*l+c] == 0){
+      temp.swap(r,temp.maxCoeff(r,c));
+      while (temp[temp.maxCoeff(r,c)*l+c] == 0)
+      c++;
+    }
+    
+    for(int i = r; i < h; i++)
+      if(temp[i*l+c] != 0){
+        temp.divRow(i,temp[i*l+c]);
+      }
+
+    
+    for(int i = r + 1; i < h; i++)
+      if(temp[i*l+c] != 0) 
+        temp.subRow(i,r);
+
+    temp.approxZero();
+    
+    c++;
+  }
 
   return temp;
 }
+
+template <class T>
+void matrix<T>::approxZero(){
+  for(int i = 0; i < l*h; i++)
+    if(bxm::abs((*this)[i]) < 0.00000001)
+      (*this)[i] = 0;
+}
+
+template <class T>
+matrix<T> matrix<T>::GaussJordan()const{
+  matrix<T> temp(this->Gauss());
+  
+  int r = h - 1;
+  int rd;
+  for(int c = l - 1; c >= 0 && r > 0; c--){
+    rd = r;
+    while( temp[rd*l+c] != 1 && rd > 0 )
+      rd--;
+    if (rd > 0){
+      for(int i = rd - 1; i >= 0; i--){
+        temp.subRow(i,rd,temp[i*l+c]);
+      }
+      r--;
+    }
+  }
+
+  return temp;
+}
+  
 
 
 
