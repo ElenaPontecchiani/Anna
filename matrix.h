@@ -197,7 +197,7 @@ matrix<T> matrix<T>::operator*(const matrix<T>& m)const{
 
 template <class T>
 bool matrix<T>::operator==(const matrix<T>& m)const{
-  if(l != m.l || h != m.h )
+  if(!(*this).dimensions(m))
     return false;
   int i = 0;
   while(i < l*h){

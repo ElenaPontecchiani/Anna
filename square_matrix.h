@@ -1,5 +1,5 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef SQUAREMATRIX_H
+#define SQUAREMATRIX_H
 
 #include "matrix.h"
 
@@ -26,7 +26,8 @@ public:
 //ridef dimensions-->controllo solo su una
     bool dimensions(const square_matrix<T>&)const; 
 
-
+    //Operatore di ugualianza ridef perchè ridef dimensions
+    bool operator==(const matrix<T>&)const;
 //-elevazione a potenza(? da fare se già messa in passaggio f?) 
 /*
 aggiungere metodo eventualmente staico per affiancare alla matrice la sua diagonale
@@ -59,18 +60,13 @@ per calcolo inversa
 
 template <class T>
 square_matrix<T>::square_matrix(const int& dim):
-    h(dim),l(dim),raw_matrix(new T[ldim*dim]){}
-//o mettere così:
-/*
-square_matrix<T>::square_matrix(const int& dim){
-      (*this)=matrix<T>(dim,dim,new T[ldim*dim]);
-    }  
-*/
+    *this(matrix<T>(dim,dim)){}
+
 
 //ok?
 template <class T>
-square_matrix<T>::square_matrix(const square_matrix<T>& m)
-    :h(m.h),l(m.l),raw_matrix(copyArr(m)){}
+square_matrix<T>::square_matrix(const square_matrix<T>& m):
+    *this(matrix<T>(m)){}
 
 
 
@@ -99,7 +95,7 @@ return m==(*this);//restituisce se matrice e uguale a se stessa
 }
 
 template<class T>
-matrix<T> square_matrix<T>::Diagonale()const{//ritorna matrice diagonale 
+square_matrix<T> square_matrix<T>::Diagonale()const{//ritorna matrice diagonale 
 matrix<T> m(h,l);//lunghezza è doppia perchè dopo c'e da affiancare
 int j=0;
 m.raw_matrix[j]=1;
@@ -142,6 +138,20 @@ return m;
 template <class T>  
 bool square_matrix<T>::dimensions(const square_matrix<T>& m)const{
   return (h==m.h);//basta controllare una dim
+}
+
+
+template <class T>
+bool square_matrix<T>::operator==(const square_matrix<T>& m)const{
+  if(!(*this.dimensions(m)) )
+    return false;
+  int i = 0;
+  while(i < l*h){
+    if((*this)[i] != m[i])
+      return false;
+    i++;
+  }
+  return true;
 }
 
 #endif
