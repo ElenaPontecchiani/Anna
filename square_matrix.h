@@ -41,7 +41,7 @@ per calcolo inversa
 
     bool Symmetric()const;//se è trasposta a se stessa
 
-    T Determinante ()const;//non esistono parametri solo ogg inv.
+    virtual T Determinante ()const;//non esistono parametri solo ogg inv.
 };
 
 

@@ -37,9 +37,9 @@ public:
 
     //Operatori Matematici fra matrici
     matrix<T>& operator=(const matrix<T>&);
-    matrix<T> operator+(const matrix<T>&)const;
-    matrix<T> operator-(const matrix<T>&)const;
-    matrix<T> operator*(const matrix<T>&)const;
+    virtual matrix<T> operator+(const matrix<T>&)const;
+    virtual matrix<T> operator-(const matrix<T>&)const;
+    virtual matrix<T> operator*(const matrix<T>&)const;
 
     //Operazioni generali su matrici
     matrix<T> Trasposta()const;
@@ -54,7 +54,7 @@ public:
     void approxZero();
 
     //Funzioni scalari che si applicano elemento per elemento
-    matrix<T> operator*(const T&)const;//prodotto con scalare
+    virtual matrix<T> operator*(const T&)const;//prodotto con scalare
     matrix<T> mathOp(double (*function)(double));
     matrix<T> mathOp(double (*function)(double,double),const double&);
 
@@ -62,7 +62,7 @@ public:
     T& operator[](const int&)const;    
 
     //Operatore di ugualianza
-    bool operator==(const matrix<T>&)const;
+    virtual bool operator==(const matrix<T>&)const;
 
     //Operatore di conversione fra vari tipi di matrice
     //Il template class U è necessario perchè voglio rendere
@@ -70,7 +70,7 @@ public:
     template <class U>
     operator matrix<U>();
 
-    bool dimensions(const matrix<T>&)const;
+    virtual bool dimensions(const matrix<T>&)const;
 
 };
 
