@@ -46,6 +46,10 @@ public:
     matrix<T> Gauss(int col_num =-1)const;
     matrix<T> GaussJordan(int col_num =-1)const;
 
+    //Metodi di taglia-cuci per matrici
+    matrix<T> Cut(int row_start, int row_num, int col_start, int col_num)const;
+    matrix<T> Append(const matrix<T>& m1)const;
+
     //Metodi utili per l'el. di Gauss
     void swap(int r1, int r2);
     void divRow(int r, T coeff);
@@ -357,6 +361,39 @@ matrix<T> matrix<T>::GaussJordan(int col_num)const{
   }
 
   return temp;
+}
+template <class T>
+matrix<T> matrix<T>::Cut(int row_start, int row_num, int col_start, int col_num)const{
+  matrix<T> temp(row_num - row_start ,col_num - col_start);
+  int pos = 0;
+  for(int r = row_start; r < row_num; r++)
+    for(int c = col_start; c < col_num; c++){
+      temp[pos] = (*this)[r*l+c];
+      pos++;
+    }
+  return temp;
+}
+
+template <class T>  
+matrix<T> matrix<T>::Append(const matrix<T>& m1)const{
+  if(m1.h != h)
+    std::cout << "PROBLEMA VEZZZ";
+  int pos = 0;
+  matrix<T> temp(m1.h,l+m1.l);
+  for(int r = 0; r < m1.h; r++){
+    for(int c = 0; c < l; c++){
+      temp[pos] = (*this)[r*l+c];
+      pos++;
+    }
+    for(int c = 0; c < m1.l; c++){
+      temp[pos] = m1[r*m1.l+c];
+      pos++;
+    }
+  }
+  return temp;
+
+  
+
 }
 
 

@@ -16,9 +16,9 @@ int main(){
     matrix<double> sandro(a,b);
     cin >> sandro;
     cout << sandro << endl;
-    //sandro.divRow(0,2);
-    //cout << sandro << endl;
-    cout << sandro.GaussJordan(3) << endl;//aaaa
+    matrix<double> diag(3,3);
+    cin >> diag;
+    cout << sandro.Append(diag) << endl;//aaaa
     
 
 
