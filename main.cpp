@@ -18,7 +18,7 @@ int main(){
     cout << sandro << endl;
     //sandro.divRow(0,2);
     //cout << sandro << endl;
-    cout << sandro.GaussJordan() << endl;//aaaa
+    cout << sandro.GaussJordan(3) << endl;//aaaa
     
 
 

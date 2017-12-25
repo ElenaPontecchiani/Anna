@@ -43,8 +43,8 @@ public:
 
     //Operazioni generali su matrici
     matrix<T> Trasposta()const;
-    matrix<T> Gauss()const;
-    matrix<T> GaussJordan()const;
+    matrix<T> Gauss(int col_num =-1)const;
+    matrix<T> GaussJordan(int col_num =-1)const;
 
     //Metodi utili per l'el. di Gauss
     void swap(int r1, int r2);
@@ -299,11 +299,12 @@ void matrix<T>::subRow(int r1, int r2, T coeff){
 
 
 template <class T>
-matrix<T> matrix<T>::Gauss()const{
+matrix<T> matrix<T>::Gauss(int col_num)const{
   matrix<T> temp(*this);
-
+  if (col_num == -1)
+    col_num = l;
   int c = 0;
-  for(int r = 0; r < h && c < l; r++){
+  for(int r = 0; r < h && c < col_num; r++){
     if(temp[r*l+c] == 0){
       temp.swap(r,temp.maxCoeff(r,c));
       while (temp[temp.maxCoeff(r,c)*l+c] == 0)
@@ -336,12 +337,14 @@ void matrix<T>::approxZero(){
 }
 
 template <class T>
-matrix<T> matrix<T>::GaussJordan()const{
-  matrix<T> temp(this->Gauss());
+matrix<T> matrix<T>::GaussJordan(int col_num)const{
+  if (col_num == -1)
+    col_num = l;
+  matrix<T> temp(this->Gauss(col_num));
   
   int r = h - 1;
   int rd;
-  for(int c = l - 1; c >= 0 && r > 0; c--){
+  for(int c = col_num - 1; c >= 0 && r > 0; c--){
     rd = r;
     while( temp[rd*l+c] != 1 && rd > 0 )
       rd--;
