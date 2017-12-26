@@ -110,8 +110,11 @@ return m;
 }
 
 template<class T>
-matrix<T> square_matrix<T>::Inversa()const{
-return (*this.Composizine()).GaussJordan;
+square_matrix<T> square_matrix<T>::Inversa()const{
+square_matrix<T> inv(h,h);
+inv=*this.Composizine();
+inv=inv.GaussJordan();
+return inv.Cut(0,l,0,h);
 }
 
 
@@ -119,18 +122,7 @@ template<class T>
 matrix<T> square_matrix<T>::Composizione(){
 matrix<T> Diag=*this.Diagonale();
 matrix<T> m(h,2*l);//lung doppia, matrice di out
-for(int j=0;j<h;j++){
-int i=0;
-while(i<l){
-m.raw_matrix[j*2*l+i]=raw_matrix[j*l+i];}//assegnazione prime celle
-}
-//ora va assegnata pt finale righr della diag
-
-for(int j=0;j<h;j++){
-int i=0;
-while(i<l){
-m.raw_matrix[j*2*l+i+l-1]=Diag.raw_matrix[j*l+i];}//assegnazione ultime celle
-}
+m=(*this).Append(Diag)
 return m;
 }
 
