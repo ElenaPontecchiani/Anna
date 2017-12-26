@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include "matrix.h"
+#include "square_matrix.h"
 
 using std::cout;
 using std::cin;
@@ -10,15 +11,13 @@ using std::endl;
 
 int main(){
     int a;
-    int b;
     cin >> a;
-    cin >> b;
-    matrix<double> sandro(a,b);
+    square_matrix<double> sandro(a);
     cin >> sandro;
-    cout << sandro << endl;
-    matrix<double> diag(3,3);
-    cin >> diag;
-    cout << sandro.Append(diag) << endl;//aaaa
+    cout << sandro.Inversa() << endl;
+    //matrix<double> diag(3,3);
+    //cin >> diag;
+    //cout << sandro.Append(diag).GaussJordan(3).Cut(0,3,3,6) << endl;//aaaa
     
 
 

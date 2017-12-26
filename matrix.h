@@ -1,7 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-//#include <iostream>
+#include <iostream>
 #include "basx.h"
 
 template<class T>
@@ -30,16 +30,20 @@ private:
 
 
 public:
+    int getH()const;
+    int getL()const;
+
     //Ridefinizione dei big 3 ££$$$€€€€
     matrix(const int& =1,const int& =1);//inizializzato con l=1,h=1
     matrix(const matrix<T>&);//costruttore di copia
-    ~matrix();
+    virtual ~matrix();
 
     //Operatori Matematici fra matrici
     matrix<T>& operator=(const matrix<T>&);
     virtual matrix<T> operator+(const matrix<T>&)const;
     virtual matrix<T> operator-(const matrix<T>&)const;
     virtual matrix<T> operator*(const matrix<T>&)const;
+    bool sameDim(const matrix<T>&)const;
 
     //Operazioni generali su matrici
     matrix<T> Trasposta()const;
@@ -47,6 +51,7 @@ public:
     matrix<T> GaussJordan(int col_num =-1)const;
 
     //Metodi di taglia-cuci per matrici
+    void Fill(const T& t);
     matrix<T> Cut(int row_start, int row_num, int col_start, int col_num)const;
     matrix<T> Append(const matrix<T>& m1)const;
 
@@ -66,15 +71,13 @@ public:
     T& operator[](const int&)const;    
 
     //Operatore di ugualianza
-    virtual bool operator==(const matrix<T>&)const;
+    bool operator==(const matrix<T>&)const;
 
     //Operatore di conversione fra vari tipi di matrice
     //Il template class U è necessario perchè voglio rendere
     //la conversione disponibile con ogni tipo di matrice
     template <class U>
     operator matrix<U>();
-
-    virtual bool dimensions(const matrix<T>&)const;
 
 };
 
@@ -84,6 +87,11 @@ std::istream& operator>>(std::istream& is, matrix<T>& m);
 template<class T>
 std::ostream& operator<<(std::ostream& os, const matrix<T>& m);
 
+template<class T>
+int matrix<T>::getH()const{ return h;}
+
+template<class T>
+int matrix<T>::getL()const{ return l;}
 
 //////////////////////////////
 //     S T A T I C H E      //
@@ -115,6 +123,7 @@ T matrix<T>::VectProd(const matrix<T>&m1,int row, const matrix<T>&m2, int col){
 template <class T>
 matrix<T>::matrix(const int& height,const int& length):
     h(height),l(length),raw_matrix(new T[length*height]){}
+
 
 template <class T>
 matrix<T>::matrix(const matrix<T>& m):h(m.h),l(m.l),raw_matrix(copyArr(m)){}
@@ -164,7 +173,7 @@ T& matrix<T>::operator[](const int& i)const{
 #include "basxMath.h"
 template <class T>
 matrix<T> matrix<T>::operator+(const matrix<T>& m)const{
-  if(!(*this).dimensions(m)){
+  if(!(*this).sameDim(m)){
     //Throw///
     std::cout << "Non sommabile vezz" << std::endl;
   }
@@ -176,7 +185,7 @@ matrix<T> matrix<T>::operator+(const matrix<T>& m)const{
 
 template <class T>
 matrix<T> matrix<T>::operator-(const matrix<T>& m)const{
-  if(!(*this).dimensions(m)){
+  if(!(*this).sameDim(m)){
     //Throw///
     std::cout << "Non sommabile vezz" << std::endl;
   }
@@ -201,7 +210,7 @@ matrix<T> matrix<T>::operator*(const matrix<T>& m)const{
 
 template <class T>
 bool matrix<T>::operator==(const matrix<T>& m)const{
-  if(!(*this).dimensions(m))
+  if(!(*this).sameDim(m))
     return false;
   int i = 0;
   while(i < l*h){
@@ -391,16 +400,17 @@ matrix<T> matrix<T>::Append(const matrix<T>& m1)const{
     }
   }
   return temp;
-
-  
-
 }
 
-
-
 template <class T>  
-bool matrix<T>::dimensions(const matrix<T>& m)const{
+bool matrix<T>::sameDim(const matrix<T>& m)const{
   return (h==m.h && l==m.l);
+}
+
+template <class T>
+void matrix<T>::Fill(const T& t){
+  for(int i = 0; i < l*h; i++)
+    (*this)[i] = t;
 }
 
 

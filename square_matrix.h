@@ -12,36 +12,19 @@ private: //h,l,rawmatrix,copyarr vectProd
 
 
 public:
+    //Ridefinizione dei big3
     square_matrix(const int & =1);//ridef costruttore con 1 solo parametro in cui chiamo anche costruttore matrix
-    square_matrix(const square_matrix<T>&);//inizializzato con altra square matrix
-    
+    square_matrix(const matrix<T>&);//inizializzato con una matrix
     //~square_matrix();//ridef distruttore non serve?
 
-//Operatori matematici-->no controllo chiamo direttamente quello genitore
-//da tenere tutti?Prodotto con scalare ,[],+,-,*,==,=,conv U
-    
-//trasposta rimane uguale, gauss anche:non ridef
+    //Controlli e bool
+    bool isSymmetric()const;
 
-
-//ridef dimensions-->controllo solo su una
-    bool dimensions(const square_matrix<T>&)const; 
-
-    //Operatore di ugualianza ridef perchè ridef dimensions
-    bool operator==(const matrix<T>&)const;
-//-elevazione a potenza(? da fare se già messa in passaggio f?) 
-/*
-aggiungere metodo eventualmente staico per affiancare alla matrice la sua diagonale
-per calcolo inversa
-*/
-    matrix<T> Composizione();//ritorna una matrice che affianca a quella quadrata la sua diagonale-->non quadrata!!
-    
-    square_matrix<T> Diagonale()const;//ritorna matrice diagonale(1 su diag,0) con =dim matrice invocazione
-
-    square_matrix<T>Inversa()const;
-
-    bool Symmetric()const;//se è trasposta a se stessa
-
-    virtual T Determinante ()const;//non esistono parametri solo ogg inv.
+    //Matrice inversa e ausiliarie
+    virtual square_matrix<T> Inversa()const;
+    T Det ()const;
+    square_matrix<T> WithOut(int row, int col)const;
+    matrix<T> addId()const;
 };
 
 
@@ -59,91 +42,62 @@ per calcolo inversa
 //////////////////////////////
 
 template <class T>
-square_matrix<T>::square_matrix(const int& dim):
-    *this(matrix<T>(dim,dim)){}
+square_matrix<T>::square_matrix(const int& dim): matrix<T>(dim,dim){}
 
-
-//ok?
 template <class T>
-square_matrix<T>::square_matrix(const square_matrix<T>& m):
-    *this(matrix<T>(m)){}
-
-
+square_matrix<T>::square_matrix(const matrix<T>& m): matrix<T>(m){}
 
 //////////////////////////////
-//   O P E R A Z I O N I    //
+//  M E T O D I   V A R I   //
 //////////////////////////////
 
-template<class T>
-T square_matrix<T>::Determinante()const{
-//l==h el su diag primnc i==j su secondaria dim-j?
-int s=0;
-for(int i=0;i<l;i++){
-    s+=raw_matrix[i+i*l];//seleziona el su diagonale principale
-}
-//int s2=0;//per el su secondaria
-for(int i=0;i<l;i++){
-    s-=raw_matrix[(i+1)*(l-1)];//seleziona el su diagonale secondaria
-}
-return s;
+template <class T>
+bool square_matrix<T>::isSymmetric()const{
+    return (*this == this->Trasposta());
 }
 
-template<class T>
-bool square_matrix<T>::Symmetric()const{
-matrix<T> m=(*this).Trasposta;
-return m==(*this);//restituisce se matrice e uguale a se stessa
+
+/////////////////////////////////////
+//  C A L C O L O  I N V E R S A   //
+/////////////////////////////////////
+
+template <class T>
+T square_matrix<T>::Det ()const{
+    if( this->getH() == 2)
+        return( (*this)[0] * (*this)[3] - (*this)[1] * (*this)[2]  );
+    T det = 0;
+    int sign;
+    for(int i = 0; i < this->getL(); i++){
+        if ( i % 2 == 0) sign = 1;
+        else sign = -1;
+        det = det + (*this)[i] * sign * WithOut(0,i).Det();
+    }
+    return det;
 }
 
-template<class T>
-square_matrix<T> square_matrix<T>::Diagonale()const{//ritorna matrice diagonale 
-matrix<T> m(h,l);//lunghezza è doppia perchè dopo c'e da affiancare
-int j=0;
-m.raw_matrix[j]=1;
-j+=l;
-for(int i=1;i<l*h;i++){
-    if(i==j+1){
-    j+=l;// per saltare di dimi in dimi
-    m.raw_matrix[i]=1;}
-    else {m.raw_matrix[i]=0;} 
-}
-return m;
+template <class T>
+square_matrix<T> square_matrix<T>::WithOut(int row, int col)const{
+    square_matrix<T> temp(this->getH()-1);
+    int pos = 0;
+    for(int r = 0; r < this->getH(); r++)
+        for(int c = 0; c < this->getL(); c++)
+            if (c != col && r != row)
+                temp[pos++] = (*this)[r*this->getL()+c];
+    return temp;    
 }
 
-template<class T>
+template <class T>
+matrix<T> square_matrix<T>::addId()const{
+    square_matrix<T> temp(this->getL());
+    temp.Fill(0);
+    for(int i = 0; i < this->getL()*this->getL(); i += this->getL()+1)
+        temp[i] = 1;
+    return this->Append(temp);
+}
+
+template <class T>
 square_matrix<T> square_matrix<T>::Inversa()const{
-square_matrix<T> inv(h,h);
-inv=*this.Composizine();
-inv=inv.GaussJordan();
-return inv.Cut(0,l,0,h);
-}
-
-
-template<class T>
-matrix<T> square_matrix<T>::Composizione(){
-matrix<T> Diag=*this.Diagonale();
-matrix<T> m(h,2*l);//lung doppia, matrice di out
-m=(*this).Append(Diag)
-return m;
-}
-
-
-template <class T>  
-bool square_matrix<T>::dimensions(const square_matrix<T>& m)const{
-  return (h==m.h);//basta controllare una dim
-}
-
-
-template <class T>
-bool square_matrix<T>::operator==(const square_matrix<T>& m)const{
-  if(!(*this.dimensions(m)) )
-    return false;
-  int i = 0;
-  while(i < l*h){
-    if((*this)[i] != m[i])
-      return false;
-    i++;
-  }
-  return true;
+    return addId().GaussJordan(this->getH()).Cut(0,this->getH(),this->getH(),this->getH()*2);
 }
 
 #endif
