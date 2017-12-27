@@ -53,7 +53,7 @@ vector<T> vector<T>::Normalization()const{
     vector<T> temp((this->getH()),1);
     temp=*this;
     for(int i=0;i<(this->getH());i++){
-        temp->raw_matrix[i]=(temp->raw_matrix[i])/(temp.Euclidean_norm());
+        temp.raw_matrix[i]=(temp.raw_matrix[i])/(temp.Euclidean_norm());
     }
     return temp;
 }
