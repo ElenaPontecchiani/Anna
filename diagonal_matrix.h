@@ -4,47 +4,27 @@
 #include "square_matrix.h" 
 
 template<class T>
-class diagonal_matrix public:square_matrix{
+class diagonal_matrix: public square_matrix<T>{
 private: 
-  static bool onDiagonal(int dim,int i)const;//ogg inv matrice diag, dim e indice e dice se è su diag
-                                        //serve per sommare/sottrarre solo el sualla diag altri sono 0
-public:
-//costruttori da ridef-->si in input array di num che andranno sulla diag!!
-    diagonal_matrix(const&=0);
-    
-    
-    //giusto?
-    diagonal_matrix(const&=0,const T[d]);//dicitura giusta??
-    
 
+public:
+
+    diagonal_matrix(int);
+    diagonal_matrix(int,const T& t);
+    
 
     diagonal_matrix<T> operator+(const diagonal_matrix<T>&)const;
-    
-    
     diagonal_matrix<T> operator-(const diagonal_matrix<T>&)const;
+    virtual diagonal_matrix<T> operator*(const diagonal_matrix<T>&)const;
 
-    diagonal_matrix<T> operator*(const T&)const;
+    virtual matrix<T> operator*(const T&)const;
 
-    T Determinante()const;//messi solo el diagonale principale
-  
-    diagonal_matrix<T> operator*(const diagonal_matrix<T>&)const;//ridef perchè prodotto riga per colonna in matr diagonali è prodotto tra el delle diag
+    virtual T Det()const;
 
-//ridef riga per colonna è solo priditto ra el delle diagonale
-
-
+    virtual matrix<T> Trasposta()const;
+    virtual matrix<T> Gauss(int col_num =-1)const;
+    virtual matrix<T> GaussJordan(int col_num =-1)const;
 };
-
-
-//////////////////////////////
-//     S T A T I C H E      //
-//////////////////////////////
-
-template <class T>
-bool diagonal_matrix<T>::onDiagonal(int dim,int i)const{// su diag princ se è primo el o se multiplo l+1-->resto
-  if(i==0) return true;
-  if(!(i%(l+1))) return true;
-  return false;
-}
 
 
 
@@ -57,110 +37,81 @@ bool diagonal_matrix<T>::onDiagonal(int dim,int i)const{// su diag princ se è p
 
 
 template <class T>
-diagonal_matrix<T>::diagonal_matrix(const int& dim):
-    *this(square_matrix<T>(dim,dim)){
-    } 
+diagonal_matrix<T>::diagonal_matrix(int dim): square_matrix<T>(dim){} 
 
-
-//giusto????????????????????
 template <class T>
-diagonal_matrix<T>::diagonal_matrix(const int& dim,const T[]): *this(square_matrix<T>(dim,dim)){
-   
-      for(int i=0;i<dim^2;i++){
-        if(onDiagonal(dim,i)){//se è sulla diagonale mettere el?
-          cin>>raw_matrix[i];
-        }
-        else{raw_matrix[i]=0;}
-      }
-
+diagonal_matrix<T>::diagonal_matrix(int dim, const T& t): square_matrix<T>(dim){
+  (*this).Fill(0);
+  for(int i = 0; i < dim; i++)
+    (*this)[i*dim+i] = t;
 }
 
 
 //////////////////////////////
-//   OP  O V E R L O A D    //
+//  O P   O V E R L O A D   //
 //////////////////////////////
 
-
-
-
-//fare f che dice se el è sulla diagonale?
-#include "basxMath.h"
 template <class T>
-diagonal_matrix<T> diagonal_matrix<T>::operator+(const diagonal_matrix<T>& m)const{
-  if(!(*this.dimensions(m))){
-    //Throw///
-    std::cout << "Non sommabile vezz" << std::endl;
-  }
-  diagonal_matrix<T> temp(h,l);
-  for(int i = 0; i < l*h; i++){
-    if(onDiagonal(h^2,i))
-    {temp[i] = raw_matrix[i]+m.raw_matrix[i];}
-    else{temp[i] =0;}
-}
+diagonal_matrix<T> diagonal_matrix<T>::operator+(const diagonal_matrix<T>& dm)const{
+  diagonal_matrix<T> temp(*this);
+  for(int i = 0; i < this->getL(); i++)
+    temp[i*this->getL()+i] = temp[i*this->getL()+i] + dm[i*this->getL()+i];
   return temp;
 }
 
 template <class T>
-matrix<T> matrix<T>::operator-(const matrix<T>& m)const{
-  if(!(l == m.l && h == m.h)){
-    //Throw///
-    std::cout << "Non sommabile vezz" << std::endl;
-  }
-  matrix<T> temp(h^2,l);
-  ffor(int i = 0; i < l*h; i++){
-    if(onDiagonal(h,i))
-    {temp[i] = raw_matrix[i]-m.raw_matrix[i];}
-    else{temp[i] =0;}
-}
+diagonal_matrix<T> diagonal_matrix<T>::operator-(const diagonal_matrix<T>& dm)const{
+  diagonal_matrix<T> temp(*this);
+  for(int i = 0; i < this->getL(); i++)
+    temp[i*this->getL()+i] = temp[i*this->getL()+i] - dm[i*this->getL()+i];
   return temp;
 }
-
-
 
 template <class T>
-diagonal_matrix<T> diagonal_matrix<T>::operator*(const T& t)const{
-  if(!(*this.dimensions(m))){
-    //Throw///
-    std::cout << "Non sommabile vezz" << std::endl;
-  }
-  diagonal_matrix<T> temp(h,l);
-  for(int i = 0; i < l*h; i++){
-    if(onDiagonal(h^2,i))
-    {temp[i] =raw_matrix[i]*t;}
-    else{temp[i] =0;}
-}
+diagonal_matrix<T> diagonal_matrix<T>::operator*(const diagonal_matrix<T>& dm)const{
+  diagonal_matrix<T> temp(this->getL());
+  temp.Fill(0);
+  for(int i = 0; i < this->getL(); i++)
+    temp[i*this->getL()+i] = (*this)[i*this->getL()+i] * dm[i*this->getL()+i];
   return temp;
 }
-
 
 template <class T>
-diagonal_matrix<T> diagonal_matrix<T>::operator*(const diagonal_matrix<T>& m)const{
-  iff(!(*this.dimensions(m))){//il metodo si può invocare anche qui tanto sono quadrate
-    std::cout << "dim sbagliate";
-  }
-  diagonal_matrixmatrix<T> temp(h,h);
-  for(int i = 0; i < h^2; i++){
-    if(onDiagonal(h^2,i))
-    {temp[i] =raw_matrix[i]*m.raw_matrix[i];}
-    else {temp[i] =0;}
-    }
+matrix<T> diagonal_matrix<T>::operator*(const T& t)const{
+  diagonal_matrix<T> temp(*this);
+  for(int i = 0; i < this->getL(); i++)
+    temp[i*this->getL()+i] = temp[i*this->getL()+i] * t;
   return temp;
 }
-
 
 //////////////////////////////
-//   O P E R A Z I O N I    //
+//  O P E R A Z I O N I     //
 //////////////////////////////
 
-template<class T>
-T square_matrix<T>::Determinante()const{
-//non fatta secondaria tanto tt 0
-int s=0;
-for(int i=0;i<l;i++){
-    s+=raw_matrix[i+i*l];//seleziona el su diagonale principale
+template <class T>
+T diagonal_matrix<T>::Det()const{
+  T t = 1;
+  for(int i = 0; i < this->getL(); i++)
+    t = (*this)[i*this->getL()+i] * t;
+  return t;
 }
-return s;
+
+template <class T>
+matrix<T> diagonal_matrix<T>::Trasposta()const{
+  return diagonal_matrix<T>(*this);
 }
+
+template <class T>
+matrix<T> diagonal_matrix<T>::Gauss(int col_num)const{
+  return diagonal_matrix<T>(*this);
+}
+
+template <class T>
+matrix<T> diagonal_matrix<T>::GaussJordan(int col_num)const{
+  return diagonal_matrix<T>(*this);
+}
+
+
 
 
 

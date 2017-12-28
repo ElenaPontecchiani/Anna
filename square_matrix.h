@@ -13,8 +13,8 @@ private: //h,l,rawmatrix,copyarr vectProd
 
 public:
     //Ridefinizione dei big3
-    square_matrix(const int & =1);//ridef costruttore con 1 solo parametro in cui chiamo anche costruttore matrix
-    square_matrix(const matrix<T>&);//inizializzato con una matrix
+    square_matrix(int);
+    square_matrix(const matrix<T>&);
     //~square_matrix();//ridef distruttore non serve?
 
     //Controlli e bool
@@ -22,7 +22,7 @@ public:
 
     //Matrice inversa e ausiliarie
     virtual square_matrix<T> Inversa()const;
-    T Det ()const;
+    virtual T Det ()const;
     square_matrix<T> WithOut(int row, int col)const;
     matrix<T> addId()const;
 };
@@ -42,7 +42,7 @@ public:
 //////////////////////////////
 
 template <class T>
-square_matrix<T>::square_matrix(const int& dim): matrix<T>(dim,dim){}
+square_matrix<T>::square_matrix(int dim): matrix<T>(dim,dim){}
 
 template <class T>
 square_matrix<T>::square_matrix(const matrix<T>& m): matrix<T>(m){}

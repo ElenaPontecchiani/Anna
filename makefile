@@ -5,7 +5,7 @@ PROG_NAME=prog
 prog :  main basx basxMath
 	$(CC) $(CCFLAGS) -o $(PROG_NAME) main.o basx.o basxMath.o
 
-main :  main.cpp basx.h matrix.h square_matrix.h
+main :  main.cpp basx.h matrix.h square_matrix.h diagonal_matrix.h
 	$(CC) $(CCFLAGS) -c main.cpp -o main.o
 
 basx:	basx.cpp basx.h

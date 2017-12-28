@@ -40,15 +40,15 @@ public:
 
     //Operatori Matematici fra matrici
     matrix<T>& operator=(const matrix<T>&);
-    virtual matrix<T> operator+(const matrix<T>&)const;
-    virtual matrix<T> operator-(const matrix<T>&)const;
-    virtual matrix<T> operator*(const matrix<T>&)const;
+    matrix<T> operator+(const matrix<T>&)const;
+    matrix<T> operator-(const matrix<T>&)const;
+    matrix<T> operator*(const matrix<T>&)const;
     bool sameDim(const matrix<T>&)const;
 
     //Operazioni generali su matrici
-    matrix<T> Trasposta()const;
-    matrix<T> Gauss(int col_num =-1)const;
-    matrix<T> GaussJordan(int col_num =-1)const;
+    virtual matrix<T> Trasposta()const;
+    virtual matrix<T> Gauss(int col_num =-1)const;
+    virtual matrix<T> GaussJordan(int col_num =-1)const;
 
     //Metodi di taglia-cuci per matrici
     void Fill(const T& t);
