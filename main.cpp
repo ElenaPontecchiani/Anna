@@ -4,6 +4,7 @@
 #include "matrix.h"
 #include "square_matrix.h"
 #include "diagonal_matrix.h"
+#include "scalar_matrix.h"
 
 using std::cout;
 using std::cin;
@@ -14,10 +15,10 @@ int main(){
     int a;
 
     cin >> a;
-    diagonal_matrix<double> sandro(a,1);
+    diagonal_matrix<double> sandro(a,2);
     //cin >> sandro;
-    matrix<double>* p = &sandro;
-    cout << p->GaussJordan() << endl;
+    //matrix<double>* p = &sandro;
+    cout << sandro.Det() << endl;
 
    /* cin >> a;
     square_matrix<double> sandrina(a);
