@@ -5,6 +5,7 @@
 #include "square_matrix.h"
 #include "diagonal_matrix.h"
 #include "scalar_matrix.h"
+#include "vector.h"
 
 using std::cout;
 using std::cin;
@@ -15,17 +16,11 @@ int main(){
     int a;
 
     cin >> a;
-    diagonal_matrix<double> sandro(a,2);
-    //cin >> sandro;
-    //matrix<double>* p = &sandro;
-    cout << sandro.Det() << endl;
+    vector<double> lil_tony(1,a);
+    cin >> lil_tony;
+    cout << lil_tony << endl;
 
-   /* cin >> a;
-    square_matrix<double> sandrina(a);
-    cin >> sandrina;
-    cout << sandrina << endl;
-
-    cout << sandro.Det() << endl << sandrina.Det() << endl;*/
+    cout << lil_tony.Euclidean_norm() << endl << lil_tony.Normalization() << endl;
 
 
 

@@ -8,13 +8,13 @@ template<class T>
 class matrix{
 /*  Cosa vuol dire sta cosa?
  *  Tutte le istanze di questi overload sono amiche della classe matrice,
- *  indipendentemente dal tipo U che matrix contiene. 
+ *  indipendentemente dal tipo U che matrix contiene.
  */
 template <class U>
   friend std::istream& operator>>(std::istream& is, matrix<U>& m);
 template <class U>
   friend std::ostream& operator<<(std::ostream& os, const matrix<U>& m);
-  
+
 private:
     int h;
     int l;
@@ -27,7 +27,6 @@ private:
     //Esegue il prodotto vettoriale fra due vettori estrapolati da matrici
     //sulla riga row e colonna col
     static T VectProd(const matrix<T>&m1,int row, const matrix<T>&m2, int col);
-
 
 public:
     int getH()const;
@@ -68,7 +67,7 @@ public:
     matrix<T> mathOp(double (*function)(double,double),const double&);
 
     //Operatore di selezione di un elemento nell'array
-    T& operator[](const int&)const;    
+    T& operator[](const int&)const;
 
     //Operatore di ugualianza
     bool operator==(const matrix<T>&)const;
@@ -140,7 +139,7 @@ matrix<T>::~matrix(){
 template<class T>
 std::istream& operator>>(std::istream& is, matrix<T>& m){
   for(int i=0; i < m.h * m.l; i++)
-    is >> m[i];    
+    is >> m[i];
   return is;
 }
 
@@ -288,7 +287,7 @@ void matrix<T>::swap(int r1, int r2){
 template <class T>
 void matrix<T>::divRow(int r, T coeff){
   for(int c = 0; c < l; c++)
-    if((*this)[r*l+c] != 0)  
+    if((*this)[r*l+c] != 0)
       (*this)[r*l+c] = (*this)[r*l+c]/coeff;
   /*if (r == 1)
     std::cout << "Riga: " << r << " Coeff: " << coeff << std::endl;*/
@@ -306,7 +305,7 @@ int matrix<T>::maxCoeff(int now_row, int now_col)const{
 template <class T>
 void matrix<T>::subRow(int r1, int r2, T coeff){
   for(int c = 0; c < l; c++)
-    (*this)[r1*l+c] = (*this)[r1*l+c] - (*this)[r2*l+c] * coeff; 
+    (*this)[r1*l+c] = (*this)[r1*l+c] - (*this)[r2*l+c] * coeff;
 }
 
 
@@ -323,19 +322,19 @@ matrix<T> matrix<T>::Gauss(int col_num)const{
       while (temp[temp.maxCoeff(r,c)*l+c] == 0)
       c++;
     }
-    
+
     for(int i = r; i < h; i++)
       if(temp[i*l+c] != 0){
         temp.divRow(i,temp[i*l+c]);
       }
 
-    
+
     for(int i = r + 1; i < h; i++)
-      if(temp[i*l+c] != 0) 
+      if(temp[i*l+c] != 0)
         temp.subRow(i,r);
 
     temp.approxZero();
-    
+
     c++;
   }
 
@@ -354,7 +353,7 @@ matrix<T> matrix<T>::GaussJordan(int col_num)const{
   if (col_num == -1)
     col_num = l;
   matrix<T> temp(this->Gauss(col_num));
-  
+
   int r = h - 1;
   int rd;
   for(int c = col_num - 1; c >= 0 && r > 0; c--){
@@ -383,7 +382,7 @@ matrix<T> matrix<T>::Cut(int row_start, int row_num, int col_start, int col_num)
   return temp;
 }
 
-template <class T>  
+template <class T>
 matrix<T> matrix<T>::Append(const matrix<T>& m1)const{
   if(m1.h != h)
     std::cout << "PROBLEMA VEZZZ";
@@ -402,7 +401,7 @@ matrix<T> matrix<T>::Append(const matrix<T>& m1)const{
   return temp;
 }
 
-template <class T>  
+template <class T>
 bool matrix<T>::sameDim(const matrix<T>& m)const{
   return (h==m.h && l==m.l);
 }
