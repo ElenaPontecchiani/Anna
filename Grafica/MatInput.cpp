@@ -42,8 +42,9 @@ double MatInput::getValue(int r, int c){
 
 #include <math.h>
 void MatInput::sqrt(){
-    std::cout << "llolo";
-    mat->mathOp(pow,0.5);
+    *mat = mat->mathOp(pow,0.5);
+    std::cout << *mat << std::endl;
+
     emit Update();
 }
 

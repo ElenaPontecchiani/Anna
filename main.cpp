@@ -13,14 +13,10 @@ using std::endl;
 
 
 int main(){
-    int a;
-
+    matrix<double> a(2,2);
     cin >> a;
-    vector<double> lil_tony(1,a);
-    cin >> lil_tony;
-    cout << lil_tony << endl;
+    cout << a.mathOp(pow,0.5);
 
-    cout << lil_tony.Euclidean_norm() << endl << lil_tony.Normalization() << endl;
 
 
 
