@@ -1,4 +1,4 @@
-#include "MatFun.h"
+﻿#include "MatFun.h"
 #include "MatInput.h"
 
 #include <QPushButton>
@@ -51,7 +51,7 @@ MatFun::MatFun(MatInput* refMat,QWidget *parent):QWidget(parent){
 
     connect(add,SIGNAL(clicked()),refMat,SLOT(add()));
 
-    buttons->addWidget(ass,2,0);
+    buttons->addWidget(add,2,0);
 
 
 
