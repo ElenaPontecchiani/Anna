@@ -33,20 +33,44 @@ MatInput::MatInput(matrix<double>* m, QWidget* parent): mat(m), QWidget(parent){
 void MatInput::setMatrixValue(const QString& str, int r, int c){
     int lol = (*mat).getL();
     (*mat)[r*lol+c] = str.QString::toDouble();
-    std::cout << "funzia!!\n";
+    std::cout << (*mat) << "\n";
+}
+
+double MatInput::getValue(int r, int c){
+    return (*mat)[r*mat->getL()+c];
+}
+
+#include <math.h>
+void MatInput::sqrt(){
+    std::cout << "llolo";
+    mat->mathOp(pow,0.5);
+    emit Update();
 }
 
 
 
-InputBox::InputBox(int rr, int cc, QWidget* parent): r(rr), c(cc), QLineEdit(parent){
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+InputBox::InputBox(int rr, int cc, MatInput* parent): r(rr), c(cc), father(parent), QLineEdit(parent){
     setValidator(new QDoubleValidator(this));
     connect(this,SIGNAL(textChanged(const QString &)),this,SLOT(valueChanged(const QString &)));
     connect(this,SIGNAL(valueChangedSig(const QString &,int,int)),parent,SLOT(setMatrixValue(const QString &,int,int)));
+    connect(parent,SIGNAL(Update()),this,SLOT(Update()));
 }
 
 void InputBox::valueChanged(const QString & str){
     emit valueChangedSig(str,r,c);
     //valueChangedSig(const QString &str,int rr, int cc);
+}
+
+void InputBox::focusOutEvent(QFocusEvent *event){
+    QLineEdit::focusOutEvent(event);
+    setText(QString::number(father->getValue(r,c)));
+}
+
+void InputBox::Update(){
+    setText(QString::number(father->getValue(r,c)));
 }
 
 
