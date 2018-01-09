@@ -6,20 +6,28 @@
 
 #include <QWidget>
 #include <QLineEdit>
+#include <QGridLayout>
 
 
 class MatInput: public QWidget{
 Q_OBJECT
 private:
     matrix<double>* mat;
+    QGridLayout* num_grid;
 public:
     MatInput(matrix<double>* m, QWidget* parent =0);
+    ~MatInput();
+
     double getValue(int r, int c);
 signals:
     void Update();
 public slots:
+    void newMatrix(int r, int c);
     void setMatrixValue(const QString& str, int r, int c);
     void sqrt();
+    void Gauss();
+    void GaussJordan();
+    void Trasposta();
 };
 
 

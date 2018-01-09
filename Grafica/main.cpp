@@ -7,16 +7,19 @@
 
 int main(int argc, char* argv[]){
     QApplication* app = new QApplication(argc,argv);
-    matrix<double> a(8,9);
-    a.Fill(0);
+    int c;
+    int r;
+    std:: cin >> r >> c;
+    matrix<double>* a= new matrix<double>(r,c);
+    a->Fill(0);
 
     QWidget *window = new QWidget;
     QVBoxLayout *prog = new QVBoxLayout;
 
-    MatInput mat(&a);
-    MatFun tast(&mat);
+    MatInput* mat = new MatInput(a);
+    MatFun tast(mat);
 
-    prog->addWidget(&mat);
+    prog->addWidget(mat);
     prog->addWidget(&tast);
 
     window->setLayout(prog);
