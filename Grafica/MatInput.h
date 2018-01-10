@@ -7,13 +7,17 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QGridLayout>
-
+#include <QHBoxLayout>
+#include <QLabel>
 
 class MatInput: public QWidget{
 Q_OBJECT
 private:
     matrix<double>* mat;
-    QGridLayout* num_grid;
+    QHBoxLayout* Lyout;
+    QLabel * det;
+
+    QHBoxLayout* defLay();
 public:
     MatInput(matrix<double>* m, QWidget* parent =0);
     ~MatInput();
@@ -38,12 +42,16 @@ private:
     MatInput* father;
     int r;
     int c;
+
 protected:
     void focusOutEvent(QFocusEvent *event);
+
 public:
     InputBox(int rr =0, int cc =0, MatInput* parent =0);
+
 signals:
     void valueChangedSig(const QString &str,int rr, int cc);
+
 public slots:
     void valueChanged(const QString &str);
     void Update();

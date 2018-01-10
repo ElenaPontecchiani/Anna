@@ -1,16 +1,17 @@
 #include "MatInput.h"
 #include "MatFun.h"
+#include "DimInput.h"
 #include "../matrix.h"
 #include <iostream>
 #include <QApplication>
 #include <QVBoxLayout>
+#include <QLabel>
+
 
 int main(int argc, char* argv[]){
     QApplication* app = new QApplication(argc,argv);
-    int c;
-    int r;
-    std:: cin >> r >> c;
-    matrix<double>* a= new matrix<double>(r,c);
+
+    matrix<double>* a= new matrix<double>(4,3);
     a->Fill(0);
 
     QWidget *window = new QWidget;
@@ -18,8 +19,14 @@ int main(int argc, char* argv[]){
 
     MatInput* mat = new MatInput(a);
     MatFun tast(mat);
+    DimInput* dim = new DimInput(mat,window);
+    QLabel* Det = new QLabel(window);
+    Det->setText("Determinante");
 
+
+    prog->addWidget(dim);
     prog->addWidget(mat);
+    prog->addWidget(Det);
     prog->addWidget(&tast);
 
     window->setLayout(prog);

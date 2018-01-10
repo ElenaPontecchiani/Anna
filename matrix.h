@@ -43,6 +43,8 @@ public:
     matrix<T> operator-(const matrix<T>&)const;
     matrix<T> operator*(const matrix<T>&)const;
     bool sameDim(const matrix<T>&)const;
+    virtual bool hasDet()const;
+    virtual bool isInvertible()const;
 
     //Operazioni generali su matrici
     virtual matrix<T> Trasposta()const;
@@ -412,6 +414,15 @@ void matrix<T>::Fill(const T& t){
     (*this)[i] = t;
 }
 
+template <class T>
+bool matrix<T>::hasDet()const{
+  return false;
+}
+
+template <class T>
+bool matrix<T>::isInvertible()const{
+  return false;
+}
 
 
 

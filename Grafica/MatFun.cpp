@@ -13,7 +13,7 @@ MatFun::MatFun(MatInput* refMat,QWidget *parent):QWidget(parent){
     QPushButton* GaussJordan = new QPushButton;     //GaussJordan
     QPushButton* Gauss = new QPushButton;           //Gauss
     QPushButton* Trasp = new QPushButton;
-    QPushButton* minus = new QPushButton;
+    QPushButton* det = new QPushButton;
     QPushButton* mul = new QPushButton;
     QPushButton* div = new QPushButton;
 
@@ -22,9 +22,11 @@ MatFun::MatFun(MatInput* refMat,QWidget *parent):QWidget(parent){
     GaussJordan->setText("GaussJordan");
     Gauss->setText("Gauss");
     Trasp->setText("Trasposta");
-    minus->setText("-");
+    det->setText("Determinante");
     mul->setText("*");
     div->setText("/");
+
+    det->setEnabled(false);
 
     buttons->addWidget(pow,0,1);
     buttons->addWidget(sqrt,0,0);
@@ -33,14 +35,14 @@ MatFun::MatFun(MatInput* refMat,QWidget *parent):QWidget(parent){
     buttons->addWidget(Trasp,2,0);
     buttons->addWidget(mul,3,0);
     buttons->addWidget(div,3,1);
-    buttons->addWidget(minus,2,1);
+    buttons->addWidget(det,2,1);
 
     connect(sqrt,SIGNAL(clicked()),refMat,SLOT(sqrt()));
     connect(pow,SIGNAL(clicked()),refMat,SLOT(pow()));
     connect(GaussJordan,SIGNAL(clicked()),refMat,SLOT(GaussJordan()));
     connect(Gauss,SIGNAL(clicked()),refMat,SLOT(Gauss()));
     connect(Trasp,SIGNAL(clicked()),refMat,SLOT(Trasposta()));
-    connect(minus,SIGNAL(clicked()),refMat,SLOT(minus()));
+    connect(det,SIGNAL(clicked()),refMat,SLOT(det()));
     connect(mul,SIGNAL(clicked()),refMat,SLOT(mul()));
     connect(div,SIGNAL(clicked()),refMat,SLOT(div()));
 

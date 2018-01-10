@@ -8,25 +8,14 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <string>
 #include <QString>
 #include <QDoubleValidator>
 
 MatInput::MatInput(matrix<double>* m, QWidget* parent): mat(m), QWidget(parent){
-
-    InputBox** numbers = new InputBox*[m->getH()*m->getL()];
-    for(int r = 0; r < m->getH(); r++)
-        for(int c = 0; c < m->getL(); c++){
-            numbers[r*m->getL()+c] = new InputBox(r,c,this);
-            numbers[r*m->getL()+c]->setText(QString::number((*m)[r*m->getL()+c]));
-        }
-
-    num_grid = new QGridLayout;
-    for(int r = 0; r < m->getH(); r++)
-        for(int c = 0; c < m->getL(); c++){
-            num_grid->addWidget(numbers[r*m->getL()+c],r,c);
-        }
-    setLayout(num_grid);
+    Lyout = new QHBoxLayout;
+    setLayout(defLay());
 
 }
 
@@ -55,22 +44,31 @@ void MatInput::newMatrix(int r, int c){
     QGridLayout* q = num_grid;
     delete p;
     delete q;
-
-    mat = new matrix<double>(r,c);
+    if (r == c)
+        mat = new square_matrix<double>(c);
+    else
+        mat = new matrix<double>(r,c);
     mat->Fill(0);
     num_grid = new QGridLayout;
 
+    setLayout(defLay());
+}
+
+QHBoxLayout* MatInput::defLay(){
+    QHBoxLayout* lay =  new QHBoxLayout(this);
     InputBox** numbers = new InputBox*[mat->getH()*mat->getL()];
     for(int r = 0; r < mat->getH(); r++)
         for(int c = 0; c < mat->getL(); c++){
             numbers[r*mat->getL()+c] = new InputBox(r,c,this);
             numbers[r*mat->getL()+c]->setText(QString::number((*mat)[r*mat->getL()+c]));
         }
+    QGridLayout* num_grid = new QHBoxLayout(this);
     for(int r = 0; r < mat->getH(); r++)
         for(int c = 0; c < mat->getL(); c++){
             num_grid->addWidget(numbers[r*mat->getL()+c],r,c);
         }
-    setLayout(num_grid);
+    lay->addLayout(num_grid);
+    return lay;
 }
 
 

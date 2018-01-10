@@ -19,6 +19,8 @@ public:
 
     //Controlli e bool
     bool isSymmetric()const;
+    virtual bool hasDet()const;
+    virtual bool isInvertible()const;
 
     //Matrice inversa e ausiliarie
     virtual square_matrix<T> Inversa()const;
@@ -83,7 +85,7 @@ square_matrix<T> square_matrix<T>::WithOut(int row, int col)const{
         for(int c = 0; c < this->getL(); c++)
             if (c != col && r != row)
                 temp[pos++] = (*this)[r*this->getL()+c];
-    return temp;    
+    return temp;
 }
 
 template <class T>
@@ -98,6 +100,17 @@ matrix<T> square_matrix<T>::addId()const{
 template <class T>
 square_matrix<T> square_matrix<T>::Inversa()const{
     return addId().GaussJordan(this->getH()).Cut(0,this->getH(),this->getH(),this->getH()*2);
+}
+
+
+template <class T>
+bool square_matrix<T>::hasDet()const{
+  return true;
+}
+
+template <class T>
+bool square_matrix<T>::isInvertible()const{
+  return Det() != 0;
 }
 
 #endif
