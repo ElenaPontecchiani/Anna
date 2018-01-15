@@ -14,9 +14,9 @@
 #include <QDoubleValidator>
 
 MatInput::MatInput(matrix<double>* m, QWidget* parent): mat(m), QWidget(parent){
-    Lyout = new QHBoxLayout;
-    setLayout(defLay());
-
+    num_grid = defLay();
+    setLayout(num_grid);
+    emit UpDet(detString());
 }
 
 MatInput::~MatInput(){
@@ -26,8 +26,7 @@ MatInput::~MatInput(){
 
 
 void MatInput::setMatrixValue(const QString& str, int r, int c){
-    int lol = (*mat).getL();
-    (*mat)[r*lol+c] = str.QString::toDouble();
+    (*mat)[r*(*mat).getL()+c] = str.QString::toDouble();
 }
 
 double MatInput::getValue(int r, int c){
@@ -49,43 +48,52 @@ void MatInput::newMatrix(int r, int c){
     else
         mat = new matrix<double>(r,c);
     mat->Fill(0);
-    num_grid = new QGridLayout;
+    num_grid = defLay();
 
-    setLayout(defLay());
+    setLayout(num_grid);
+    emit UpDet(detString());
 }
 
-QHBoxLayout* MatInput::defLay(){
-    QHBoxLayout* lay =  new QHBoxLayout(this);
+QGridLayout* MatInput::defLay(){
     InputBox** numbers = new InputBox*[mat->getH()*mat->getL()];
     for(int r = 0; r < mat->getH(); r++)
         for(int c = 0; c < mat->getL(); c++){
             numbers[r*mat->getL()+c] = new InputBox(r,c,this);
             numbers[r*mat->getL()+c]->setText(QString::number((*mat)[r*mat->getL()+c]));
         }
-    QGridLayout* num_grid = new QHBoxLayout(this);
+    QGridLayout* lay = new QGridLayout(this);
     for(int r = 0; r < mat->getH(); r++)
         for(int c = 0; c < mat->getL(); c++){
-            num_grid->addWidget(numbers[r*mat->getL()+c],r,c);
+            lay->addWidget(numbers[r*mat->getL()+c],r,c);
         }
-    lay->addLayout(num_grid);
     return lay;
 }
 
+QString MatInput::detString(){
+    if(!mat->hasDet())
+        return "Determinante non disponibile";
+    QString det = "Determinante = ";
+    det.append(QString::number(mat->Det()));
+    return det;
+}
 
 #include <math.h>
 void MatInput::sqrt(){
     *mat = mat->mathOp(pow,0.5);
     emit Update();
+    emit UpDet(detString());
 }
 
 void MatInput::Gauss(){
     *mat = mat->Gauss();
     emit Update();
+    emit UpDet(detString());
 }
 
 void MatInput::GaussJordan(){
     *mat = mat->GaussJordan();
     emit Update();
+    emit UpDet(detString());
 }
 
 void MatInput::Trasposta(){
@@ -93,8 +101,18 @@ void MatInput::Trasposta(){
     newMatrix(mat->getL(),mat->getH());
     *mat = temp;
     emit Update();
+    emit UpDet(detString());
 }
 
+void MatInput::Inversa(){
+    if(mat->Det() != 0){
+        matrix<double> temp = mat->Inversa();
+        newMatrix(mat->getL(),mat->getH());
+        *mat = temp;
+        emit Update();
+        emit UpDet(detString());
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

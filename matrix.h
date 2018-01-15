@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "basx.h"
+#include "square_matrix.h"
 
 template<class T>
 class matrix{
@@ -50,6 +51,8 @@ public:
     virtual matrix<T> Trasposta()const;
     virtual matrix<T> Gauss(int col_num =-1)const;
     virtual matrix<T> GaussJordan(int col_num =-1)const;
+    virtual square_matrix<T> Inversa()const;
+    virtual T Det()const;
 
     //Metodi di taglia-cuci per matrici
     void Fill(const T& t);
@@ -422,6 +425,16 @@ bool matrix<T>::hasDet()const{
 template <class T>
 bool matrix<T>::isInvertible()const{
   return false;
+}
+
+template <class T>
+T matrix<T>::Det()const{
+  return 0;
+}
+
+template <class T>
+square_matrix<T> matrix<T>::Inversa()const{
+  return square_matrix(1,1);
 }
 
 

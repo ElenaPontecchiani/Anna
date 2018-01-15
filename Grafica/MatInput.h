@@ -14,17 +14,18 @@ class MatInput: public QWidget{
 Q_OBJECT
 private:
     matrix<double>* mat;
-    QHBoxLayout* Lyout;
-    QLabel * det;
+    QGridLayout* num_grid;
 
-    QHBoxLayout* defLay();
+    QGridLayout* defLay();
 public:
     MatInput(matrix<double>* m, QWidget* parent =0);
     ~MatInput();
 
+    QString detString();
     double getValue(int r, int c);
 signals:
     void Update();
+    void UpDet(const QString&);
 public slots:
     void newMatrix(int r, int c);
     void setMatrixValue(const QString& str, int r, int c);
@@ -32,6 +33,7 @@ public slots:
     void Gauss();
     void GaussJordan();
     void Trasposta();
+    void Inversa();
 };
 
 

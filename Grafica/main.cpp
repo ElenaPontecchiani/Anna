@@ -20,13 +20,10 @@ int main(int argc, char* argv[]){
     MatInput* mat = new MatInput(a);
     MatFun tast(mat);
     DimInput* dim = new DimInput(mat,window);
-    QLabel* Det = new QLabel(window);
-    Det->setText("Determinante");
 
 
     prog->addWidget(dim);
     prog->addWidget(mat);
-    prog->addWidget(Det);
     prog->addWidget(&tast);
 
     window->setLayout(prog);
