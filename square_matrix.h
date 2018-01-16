@@ -27,6 +27,11 @@ public:
     virtual T Det ()const;
     square_matrix<T> WithOut(int row, int col)const;
     matrix<T> addId()const;
+
+    //Metodi vritual
+    virtual square_matrix<T>* Trasposta()const;
+    virtual square_matrix<T>* Gauss(int col_num =-1)const;
+    virtual square_matrix<T>* GaussJordan(int col_num =-1)const;
 };
 
 
@@ -94,12 +99,12 @@ matrix<T> square_matrix<T>::addId()const{
     temp.Fill(0);
     for(int i = 0; i < this->getL()*this->getL(); i += this->getL()+1)
         temp[i] = 1;
-    return this->Append(temp);
+    return *(this->Append(temp));
 }
 
 template <class T>
 square_matrix<T> square_matrix<T>::Inversa()const{
-    return addId().GaussJordan(this->getH()).Cut(0,this->getH(),this->getH(),this->getH()*2);
+    return *(addId().GaussJordan(this->getH())->Cut(0,this->getH(),this->getH(),this->getH()*2));
 }
 
 
@@ -111,6 +116,28 @@ bool square_matrix<T>::hasDet()const{
 template <class T>
 bool square_matrix<T>::isInvertible()const{
   return Det() != 0;
+}
+
+/////////////////////////////////////
+//         V I R T U A L I         //
+/////////////////////////////////////
+
+template <class T>
+square_matrix<T>* square_matrix<T>::Trasposta()const{
+    return dynamic_cast<square_matrix<T>*>(this->matrix<T>::Trasposta());
+}
+
+template <class T>
+square_matrix<T>* square_matrix<T>::Gauss(int col_num)const{
+    return dynamic_cast<square_matrix<T>*>(this->matrix<T>::Gauss());
+}
+
+template <class T>
+square_matrix<T>* square_matrix<T>::GaussJordan(int col_num)const{
+  matrix<T>* m = new matrix<T>(*this);
+  matrix<T>* n = new matrix<T>(*m->GaussJordan());
+  std::cout << *n << std::endl;
+  square_matrix<T> *p = new square_matrix<T>(2); p->Fill(2); return p;
 }
 
 #endif

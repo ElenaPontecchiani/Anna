@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "basx.h"
-#include "square_matrix.h"
 
 template<class T>
 class matrix{
@@ -44,20 +43,16 @@ public:
     matrix<T> operator-(const matrix<T>&)const;
     matrix<T> operator*(const matrix<T>&)const;
     bool sameDim(const matrix<T>&)const;
-    virtual bool hasDet()const;
-    virtual bool isInvertible()const;
 
     //Operazioni generali su matrici
-    virtual matrix<T> Trasposta()const;
-    virtual matrix<T> Gauss(int col_num =-1)const;
-    virtual matrix<T> GaussJordan(int col_num =-1)const;
-    virtual square_matrix<T> Inversa()const;
-    virtual T Det()const;
+    virtual matrix<T>* Trasposta()const;
+    virtual matrix<T>* Gauss(int col_num =-1)const;
+    virtual matrix<T>* GaussJordan(int col_num =-1)const;
 
     //Metodi di taglia-cuci per matrici
     void Fill(const T& t);
-    matrix<T> Cut(int row_start, int row_num, int col_start, int col_num)const;
-    matrix<T> Append(const matrix<T>& m1)const;
+    matrix<T>* Cut(int row_start, int row_num, int col_start, int col_num)const;
+    matrix<T>* Append(const matrix<T>& m1)const;
 
     //Metodi utili per l'el. di Gauss
     void swap(int r1, int r2);
@@ -68,8 +63,8 @@ public:
 
     //Funzioni scalari che si applicano elemento per elemento
     virtual matrix<T> operator*(const T&)const;//prodotto con scalare
-    matrix<T> mathOp(double (*function)(double));
-    matrix<T> mathOp(double (*function)(double,double),const double&);
+    virtual matrix<T>* mathOp(double (*function)(double));
+    virtual matrix<T>* mathOp(double (*function)(double,double),const double&);
 
     //Operatore di selezione di un elemento nell'array
     T& operator[](const int&)const;
@@ -253,27 +248,27 @@ matrix<T>::operator matrix<U>(){
 //////////////////////////////
 
 template <class T>
-matrix<T> matrix<T>::Trasposta()const{
-  matrix<T> trans(l,h);
+matrix<T>* matrix<T>::Trasposta()const{
+  matrix<T>* trans = new matrix<T>(l,h);
   for(int i = 0; i < h; ++i)
         for(int j = 0; j < l; ++j)
-            trans[j*h+i] = (*this)[i*l+j];
+            (*trans)[j*h+i] = (*this)[i*l+j];
   return trans;
 }
 
 template <class T>
-matrix<T> matrix<T>::mathOp(double (*function)(double)){
-    matrix<T> temp(h,l);
+matrix<T>* matrix<T>::mathOp(double (*function)(double)){
+    matrix<T>* temp = new matrix<T>(h,l);
     for(int i = 0; i < l*h; i++)
-        temp[i] = (*function)((*this)[i]);
+        (*temp)[i] = (*function)((*this)[i]);
     return temp;
 }
 
 template <class T>
-matrix<T> matrix<T>::mathOp(double (*function)(double,double),const double& d){
-    matrix<T> temp(h,l);
+matrix<T>* matrix<T>::mathOp(double (*function)(double,double),const double& d){
+    matrix<T>* temp = new matrix<T>(h,l);
     for(int i = 0; i < l*h; i++)
-        temp[i] = (*function)((*this)[i],d);
+        (*temp)[i] = (*function)((*this)[i],d);
     return temp;
 }
 
@@ -316,29 +311,29 @@ void matrix<T>::subRow(int r1, int r2, T coeff){
 
 
 template <class T>
-matrix<T> matrix<T>::Gauss(int col_num)const{
-  matrix<T> temp(*this);
+matrix<T>* matrix<T>::Gauss(int col_num)const{
+  matrix<T>* temp = new matrix<T>(*this);
   if (col_num == -1)
     col_num = l;
   int c = 0;
   for(int r = 0; r < h && c < col_num; r++){
     if(temp[r*l+c] == 0){
-      temp.swap(r,temp.maxCoeff(r,c));
-      while (temp[temp.maxCoeff(r,c)*l+c] == 0)
+      temp->swap(r,temp->maxCoeff(r,c));
+      while ((*temp)[temp->maxCoeff(r,c)*l+c] == 0)
       c++;
     }
 
     for(int i = r; i < h; i++)
-      if(temp[i*l+c] != 0){
-        temp.divRow(i,temp[i*l+c]);
+      if((*temp)[i*l+c] != 0){
+        temp->divRow(i,(*temp)[i*l+c]);
       }
 
 
     for(int i = r + 1; i < h; i++)
-      if(temp[i*l+c] != 0)
-        temp.subRow(i,r);
+      if((*temp)[i*l+c] != 0)
+        temp->subRow(i,r);
 
-    temp.approxZero();
+    temp->approxZero();
 
     c++;
   }
@@ -354,52 +349,52 @@ void matrix<T>::approxZero(){
 }
 
 template <class T>
-matrix<T> matrix<T>::GaussJordan(int col_num)const{
+matrix<T>* matrix<T>::GaussJordan(int col_num)const{
   if (col_num == -1)
     col_num = l;
-  matrix<T> temp(this->Gauss(col_num));
+  matrix<T>* temp = this->Gauss(col_num);
 
   int r = h - 1;
   int rd;
   for(int c = col_num - 1; c >= 0 && r > 0; c--){
     rd = r;
-    while( temp[rd*l+c] != 1 && rd > 0 )
+    while( (*temp)[rd*l+c] != 1 && rd > 0 )
       rd--;
     if (rd > 0){
       for(int i = rd - 1; i >= 0; i--){
-        temp.subRow(i,rd,temp[i*l+c]);
+        temp->subRow(i,rd,(*temp)[i*l+c]);
       }
       r--;
     }
   }
-
   return temp;
 }
+
 template <class T>
-matrix<T> matrix<T>::Cut(int row_start, int row_num, int col_start, int col_num)const{
-  matrix<T> temp(row_num - row_start ,col_num - col_start);
+matrix<T>* matrix<T>::Cut(int row_start, int row_num, int col_start, int col_num)const{
+  matrix<T>* temp = new matrix<T>(row_num - row_start ,col_num - col_start);
   int pos = 0;
   for(int r = row_start; r < row_num; r++)
     for(int c = col_start; c < col_num; c++){
-      temp[pos] = (*this)[r*l+c];
+      (*temp)[pos] = (*this)[r*l+c];
       pos++;
     }
   return temp;
 }
 
 template <class T>
-matrix<T> matrix<T>::Append(const matrix<T>& m1)const{
+matrix<T>* matrix<T>::Append(const matrix<T>& m1)const{
   if(m1.h != h)
     std::cout << "PROBLEMA VEZZZ";
   int pos = 0;
-  matrix<T> temp(m1.h,l+m1.l);
+  matrix<T>* temp = new matrix<T>(m1.h,l+m1.l);
   for(int r = 0; r < m1.h; r++){
     for(int c = 0; c < l; c++){
-      temp[pos] = (*this)[r*l+c];
+      (*temp)[pos] = (*this)[r*l+c];
       pos++;
     }
     for(int c = 0; c < m1.l; c++){
-      temp[pos] = m1[r*m1.l+c];
+      (*temp)[pos] = m1[r*m1.l+c];
       pos++;
     }
   }
@@ -417,25 +412,6 @@ void matrix<T>::Fill(const T& t){
     (*this)[i] = t;
 }
 
-template <class T>
-bool matrix<T>::hasDet()const{
-  return false;
-}
-
-template <class T>
-bool matrix<T>::isInvertible()const{
-  return false;
-}
-
-template <class T>
-T matrix<T>::Det()const{
-  return 0;
-}
-
-template <class T>
-square_matrix<T> matrix<T>::Inversa()const{
-  return square_matrix(1,1);
-}
 
 
 
