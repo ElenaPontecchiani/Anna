@@ -70,45 +70,43 @@ QGridLayout* MatInput::defLay(){
 }
 
 QString MatInput::detString(){
-    if(!mat->hasDet())
+    if(dynamic_cast<square_matrix<double>*>(mat))
         return "Determinante non disponibile";
     QString det = "Determinante = ";
-    det.append(QString::number(mat->Det()));
+    det.append(QString::number(dynamic_cast<square_matrix<double>*>(mat)->Det()));
     return det;
 }
 
 #include <math.h>
 void MatInput::sqrt(){
-    *mat = mat->mathOp(pow,0.5);
+    mat->mathOp(pow,0.5);
     emit Update();
     emit UpDet(detString());
 }
 
 void MatInput::Gauss(){
-    *mat = mat->Gauss();
+    mat->Gauss();
     emit Update();
     emit UpDet(detString());
 }
 
 void MatInput::GaussJordan(){
-    *mat = mat->GaussJordan();
+    mat->GaussJordan();
     emit Update();
     emit UpDet(detString());
 }
 
 void MatInput::Trasposta(){
-    matrix<double> temp = mat->Trasposta();
     newMatrix(mat->getL(),mat->getH());
-    *mat = temp;
+    mat->Trasposta();
     emit Update();
     emit UpDet(detString());
 }
 
 void MatInput::Inversa(){
-    if(mat->Det() != 0){
-        matrix<double> temp = mat->Inversa();
+    if(dynamic_cast<square_matrix<double>*>(mat) && dynamic_cast<square_matrix<double>*>(mat)->Det() != 0){
         newMatrix(mat->getL(),mat->getH());
-        *mat = temp;
+        dynamic_cast<square_matrix<double>*>(mat)->Inversa();
         emit Update();
         emit UpDet(detString());
     }

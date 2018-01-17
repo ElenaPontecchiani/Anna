@@ -15,11 +15,8 @@ using std::endl;
 int main(){
     int x;
     cin >> x;
-    square_matrix<double> a(x);
-    cin >> a;
-    a.Inversa();
-    cout << a;
-
+    matrix<double>* a = new diagonal_matrix<double>(3);
+    cout << dynamic_cast<square_matrix<double>*>(a);
 
 
 

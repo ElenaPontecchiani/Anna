@@ -15,7 +15,6 @@ public:
 
     //Controlli e bool
     bool isSymmetric()const;
-    virtual bool hasDet()const;
     virtual bool isInvertible()const;
 
     //Matrice inversa e ausiliarie
@@ -103,10 +102,7 @@ void square_matrix<T>::Inversa(){
 }
 
 
-template <class T>
-bool square_matrix<T>::hasDet()const{
-  return true;
-}
+
 
 template <class T>
 bool square_matrix<T>::isInvertible()const{

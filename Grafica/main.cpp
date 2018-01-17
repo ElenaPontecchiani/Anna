@@ -13,7 +13,7 @@ int main(int argc, char* argv[]){
 
     matrix<double>* a= new matrix<double>(4,3);
     a->Fill(0);
-
+    std::cout << "PRova";
     QWidget *window = new QWidget;
     QVBoxLayout *prog = new QVBoxLayout;
 
