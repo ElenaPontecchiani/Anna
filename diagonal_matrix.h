@@ -1,29 +1,32 @@
 #ifndef DIAGONALMATRIX_H
 #define DIAGONALMATRIX_H
 
-#include "square_matrix.h" 
+#include "square_matrix.h"
 
 template<class T>
 class diagonal_matrix: public square_matrix<T>{
-private: 
+private:
 
 public:
 
     diagonal_matrix(int);
     diagonal_matrix(int,const T& t);
-    
+
 
     diagonal_matrix<T> operator+(const diagonal_matrix<T>&)const;
     diagonal_matrix<T> operator-(const diagonal_matrix<T>&)const;
     virtual diagonal_matrix<T> operator*(const diagonal_matrix<T>&)const;
-
     virtual matrix<T> operator*(const T&)const;
 
-    virtual T Det()const;
+    virtual T Det ()const;
+    virtual void Trasposta();
+    virtual void Gauss(int col_num =-1);
+    virtual void GaussJordan(int col_num =-1);
 
-    virtual matrix<T> Trasposta()const;
-    virtual matrix<T> Gauss(int col_num =-1)const;
-    virtual matrix<T> GaussJordan(int col_num =-1)const;
+    void setDiag(const T& t);
+
+
+
 };
 
 
@@ -37,7 +40,7 @@ public:
 
 
 template <class T>
-diagonal_matrix<T>::diagonal_matrix(int dim): square_matrix<T>(dim){} 
+diagonal_matrix<T>::diagonal_matrix(int dim): square_matrix<T>(dim){}
 
 template <class T>
 diagonal_matrix<T>::diagonal_matrix(int dim, const T& t): square_matrix<T>(dim){
@@ -97,18 +100,22 @@ T diagonal_matrix<T>::Det()const{
 }
 
 template <class T>
-matrix<T> diagonal_matrix<T>::Trasposta()const{
-  return diagonal_matrix<T>(*this);
+void diagonal_matrix<T>::Trasposta(){}
+
+template <class T>
+void diagonal_matrix<T>::Gauss(int col_num){
+  setDiag(1);
 }
 
 template <class T>
-matrix<T> diagonal_matrix<T>::Gauss(int col_num)const{
-  return diagonal_matrix<T>(*this);
+void diagonal_matrix<T>::GaussJordan(int col_num){
+  setDiag(1);
 }
 
 template <class T>
-matrix<T> diagonal_matrix<T>::GaussJordan(int col_num)const{
-  return diagonal_matrix<T>(*this);
+void diagonal_matrix<T>::setDiag(const T& t){
+  for(int i = 0; i < this->getL(); i++)
+    this[i + this->getL()*i] = t;
 }
 
 

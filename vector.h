@@ -12,7 +12,7 @@ public:
     vector<T> operator=(const vector<T>&);
 
     T Euclidean_norm()const;//ritorna norma euclidea
-    vector<T> Normalization()const;//ritorna vettore normalizzato
+    void Normalize();//ritorna vettore normalizzato
     bool isRow() const;
     bool isColumn() const;
 
@@ -43,12 +43,10 @@ T vector<T>::Euclidean_norm()const{
 }
 
 template <class T>
-vector<T> vector<T>::Normalization()const{
-    vector<T> temp(*this);
-    T norm = temp.Euclidean_norm();
+void vector<T>::Normalize(){
+    T norm = this->Euclidean_norm();
       for(int i = 0; i < this->getL()*this->getH(); i++)
-        temp[i] = temp[i] / norm;
-    return temp;
+        (*this)[i] = (*this)[i] / norm;
 }
 
 

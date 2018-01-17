@@ -7,10 +7,6 @@
 
 template<class T>
 class square_matrix: public matrix<T>{
-private: //h,l,rawmatrix,copyarr vectProd
-
-
-
 public:
     //Ridefinizione dei big3
     square_matrix(int);
@@ -23,15 +19,11 @@ public:
     virtual bool isInvertible()const;
 
     //Matrice inversa e ausiliarie
-    virtual square_matrix<T> Inversa()const;
+    virtual void Inversa();
     virtual T Det ()const;
-    square_matrix<T> WithOut(int row, int col)const;
-    matrix<T> addId()const;
 
-    //Metodi vritual
-    virtual square_matrix<T>* Trasposta()const;
-    virtual square_matrix<T>* Gauss(int col_num =-1)const;
-    virtual square_matrix<T>* GaussJordan(int col_num =-1)const;
+    square_matrix<T> WithOut(int row, int col)const;
+    void addId();
 };
 
 
@@ -94,17 +86,20 @@ square_matrix<T> square_matrix<T>::WithOut(int row, int col)const{
 }
 
 template <class T>
-matrix<T> square_matrix<T>::addId()const{
+void square_matrix<T>::addId(){
     square_matrix<T> temp(this->getL());
     temp.Fill(0);
     for(int i = 0; i < this->getL()*this->getL(); i += this->getL()+1)
         temp[i] = 1;
-    return *(this->Append(temp));
+    this->Append(temp);
 }
 
 template <class T>
-square_matrix<T> square_matrix<T>::Inversa()const{
-    return *(addId().GaussJordan(this->getH())->Cut(0,this->getH(),this->getH(),this->getH()*2));
+void square_matrix<T>::Inversa(){
+    //return *(addId().GaussJordan(this->getH())->Cut(0,this->getH(),this->getH(),this->getH()*2));
+    this->addId();
+    this->GaussJordan(this->getH());
+    this->Cut(0,this->getH(),this->getH(),this->getH()*2);
 }
 
 
@@ -118,26 +113,6 @@ bool square_matrix<T>::isInvertible()const{
   return Det() != 0;
 }
 
-/////////////////////////////////////
-//         V I R T U A L I         //
-/////////////////////////////////////
 
-template <class T>
-square_matrix<T>* square_matrix<T>::Trasposta()const{
-    return dynamic_cast<square_matrix<T>*>(this->matrix<T>::Trasposta());
-}
-
-template <class T>
-square_matrix<T>* square_matrix<T>::Gauss(int col_num)const{
-    return dynamic_cast<square_matrix<T>*>(this->matrix<T>::Gauss());
-}
-
-template <class T>
-square_matrix<T>* square_matrix<T>::GaussJordan(int col_num)const{
-  matrix<T>* m = new matrix<T>(*this);
-  matrix<T>* n = new matrix<T>(*m->GaussJordan());
-  std::cout << *n << std::endl;
-  square_matrix<T> *p = new square_matrix<T>(2); p->Fill(2); return p;
-}
 
 #endif
