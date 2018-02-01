@@ -1,4 +1,6 @@
 #include "matrice_input.h"
+#include "../Parte_Logica/matrix.h"
+#include "../Parte_Logica/square_matrix.h"
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QItemDelegate>
@@ -7,6 +9,7 @@
 #include <QString>
 #include <QLabel>
 #include <QRegExpValidator>
+#include <math.h>
 
 
 class Delegate : public QItemDelegate
@@ -104,12 +107,16 @@ void Matrice_Input::modEl(QTableWidgetItem *item){
 }
 
 
-QString Matrice_Input::detText(){
+QString Matrice_Input::detText() const{
     square_matrix<double>* p = dynamic_cast<square_matrix<double>*>(mat);
     if (p == 0)
         return ("Determinante non disponibile");
     else
         return "Determinante: " + QString::number(p->Det());
+}
+
+matrix<double>* Matrice_Input::getMat()const{
+   return mat;
 }
 
 
@@ -120,6 +127,36 @@ void Matrice_Input::trasposta(){
     delete mat;
     mat = cp;
     upMat();
+}
+
+void Matrice_Input::gauss(){
+    mat->Gauss();
+    upMat();
+}
+
+void Matrice_Input::gaussJordan(){
+    mat->GaussJordan();
+    upMat();
+}
+
+void Matrice_Input::radX(double d){
+    mat->mathOp(pow,1.0/d);
+    upMat();
+}
+
+void Matrice_Input::powX(double d){
+    mat->mathOp(pow,d);
+    upMat();
+}
+
+void Matrice_Input::inv(){
+    square_matrix<double>* p = dynamic_cast<square_matrix<double>*>(mat);
+    if(p){
+        if (p->Det() != 0){
+            p->Inversa();
+            upMat();
+        }
+    }
 }
 
 

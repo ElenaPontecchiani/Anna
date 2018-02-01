@@ -23,7 +23,8 @@ private:
     Tastiera* tast;
 public:
     explicit Matrice_Input(int r, int c, QWidget *parent = nullptr);
-    QString detText();
+    QString detText()const;
+    matrix<double>* getMat()const;
 signals:
 
 public slots:
@@ -34,6 +35,11 @@ public slots:
     void changeRow(QString qs);
 
     void trasposta();
+    void gauss();
+    void gaussJordan();
+    void radX(double d);
+    void powX(double d);
+    void inv();
 };
 
 #endif // MATRICE_INPUT_H

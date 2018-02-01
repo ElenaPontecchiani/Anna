@@ -24,6 +24,8 @@ signals:
     void powX(double coeff);
     void plusX(double coeff);
 public slots:
+    void sendRad();
+    void sendPow();
 };
 
 #endif // TASTIERA_H
