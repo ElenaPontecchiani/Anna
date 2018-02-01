@@ -9,6 +9,9 @@
 #include <QTableWidget>
 #include <QLabel>
 #include <QString>
+#include "tastiera.h"
+
+class Tastiera;
 
 class Matrice_Input : public QWidget
 {
@@ -17,6 +20,7 @@ private:
     matrix<double>* mat;
     QTableWidget* tab;
     QLabel* det;
+    Tastiera* tast;
 public:
     explicit Matrice_Input(int r, int c, QWidget *parent = nullptr);
     QString detText();
@@ -28,6 +32,9 @@ public slots:
     void newMat(int r,int c);
     void changeCol(QString qs);
     void changeRow(QString qs);
+
+    void trasposta();
 };
 
 #endif // MATRICE_INPUT_H
+

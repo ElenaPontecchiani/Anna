@@ -25,10 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    matrice_input.cpp
+    matrice_input.cpp \
+    tastiera.cpp
 
 HEADERS += \
-    matrice_input.h
+    matrice_input.h \
+    tastiera.h
 
 FORMS += \
         mainwindow.ui

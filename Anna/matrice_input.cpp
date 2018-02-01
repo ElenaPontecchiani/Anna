@@ -26,11 +26,11 @@ public:
 
 
 
-Matrice_Input::Matrice_Input(int r, int c,QWidget *parent) :QWidget(parent)
+Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
 {
     mat = 0;
     tab = 0;
-
+    tast = new Tastiera(this);
     /*QRegExp qr("[1-9]{1,1}[0-9]{1,1}");
     QRegExpValidator* qrv = new QRegExpValidator(qr,this);*/
     QHBoxLayout* size = new QHBoxLayout();
@@ -54,6 +54,7 @@ Matrice_Input::Matrice_Input(int r, int c,QWidget *parent) :QWidget(parent)
     lay->addLayout(size);
     lay->addWidget(tab);
     lay->addWidget(det);
+    lay->addWidget(tast);
     setLayout(lay);
 }
 
@@ -99,7 +100,7 @@ void Matrice_Input::modEl(QTableWidgetItem *item){
     item->setText(item->text().replace(",","."));
     (*mat)[item->row()*mat->getL()+item->column()] = (item->text()).QString::toDouble();
     det->setText(detText());
-    cout << *mat << endl << endl;
+    //cout << *mat << endl << endl;
 }
 
 
@@ -110,4 +111,39 @@ QString Matrice_Input::detText(){
     else
         return "Determinante: " + QString::number(p->Det());
 }
+
+
+void Matrice_Input::trasposta(){
+    mat->Trasposta();
+    matrix<double>* cp = mat->clone();
+    newMat(mat->getH(),mat->getL());
+    delete mat;
+    mat = cp;
+    upMat();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

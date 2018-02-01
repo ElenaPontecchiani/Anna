@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Matrice_Input_t {
-    QByteArrayData data[12];
-    char stringdata0[84];
+    QByteArrayData data[13];
+    char stringdata0[94];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -42,11 +42,13 @@ QT_MOC_LITERAL(7, 57, 1), // "r"
 QT_MOC_LITERAL(8, 59, 1), // "c"
 QT_MOC_LITERAL(9, 61, 9), // "changeCol"
 QT_MOC_LITERAL(10, 71, 2), // "qs"
-QT_MOC_LITERAL(11, 74, 9) // "changeRow"
+QT_MOC_LITERAL(11, 74, 9), // "changeRow"
+QT_MOC_LITERAL(12, 84, 9) // "trasposta"
 
     },
     "Matrice_Input\0upMat\0\0modEl\0QTableWidgetItem*\0"
-    "item\0newMat\0r\0c\0changeCol\0qs\0changeRow"
+    "item\0newMat\0r\0c\0changeCol\0qs\0changeRow\0"
+    "trasposta"
 };
 #undef QT_MOC_LITERAL
 
@@ -56,7 +58,7 @@ static const uint qt_meta_data_Matrice_Input[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -64,11 +66,12 @@ static const uint qt_meta_data_Matrice_Input[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   39,    2, 0x0a /* Public */,
-       3,    1,   40,    2, 0x0a /* Public */,
-       6,    2,   43,    2, 0x0a /* Public */,
-       9,    1,   48,    2, 0x0a /* Public */,
-      11,    1,   51,    2, 0x0a /* Public */,
+       1,    0,   44,    2, 0x0a /* Public */,
+       3,    1,   45,    2, 0x0a /* Public */,
+       6,    2,   48,    2, 0x0a /* Public */,
+       9,    1,   53,    2, 0x0a /* Public */,
+      11,    1,   56,    2, 0x0a /* Public */,
+      12,    0,   59,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -76,6 +79,7 @@ static const uint qt_meta_data_Matrice_Input[] = {
     QMetaType::Void, QMetaType::Int, QMetaType::Int,    7,    8,
     QMetaType::Void, QMetaType::QString,   10,
     QMetaType::Void, QMetaType::QString,   10,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -91,6 +95,7 @@ void Matrice_Input::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 2: _t->newMat((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 3: _t->changeCol((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 4: _t->changeRow((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 5: _t->trasposta(); break;
         default: ;
         }
     }
@@ -121,13 +126,13 @@ int Matrice_Input::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 6;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 6)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }
