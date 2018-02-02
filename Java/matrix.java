@@ -1,7 +1,7 @@
 import java.io.*;//da togliere poi, solo per testare
 import java.util.*;
 import java.awt.*;
-import java.lang.*;
+
 
 
 public class matrix<T> {//extend number crea problemi con cin, per ora tolto poi rimesso
@@ -20,7 +20,7 @@ public matrix(int height, int length){
 	 if(length<=0) {l=1;}
 	 h=height;
 	 l=length;
-	 raw_matrix =(T[])new Object[h*l];
+	 raw_matrix =(T[])new Object[h*l];//CONVERSIONE NON SICURA
 	 for(int i=0;i<l*h;i++){
 			 raw_matrix[i]=(T)new Object();//altrementi sarebbe solo reference non inizializzato
 			}
@@ -56,15 +56,16 @@ public  void Output()
 
 public final int getL(){
 	return l;}
- /*	
-//inutile? esiste gia la funzione System.arraycopy-->differente tipo ritorno!!
-private static Object[] copyArr(matrix m){
-	Object[] tArr = new Object[m.h*m.l];
-	for(int i=0;i<m.h*m.l;i++){tArr[i]=new Object();}//vanno creati esplicitamente altrementi solo reference
+ 
+//T[] non statico e non può essere richiamato da una f statica
+//serve questa f o basta System.arraycopy(m.raw_matrix,0,tArr,0,m.h*m.l)??/*private static Object[] copyArr(matrix<?> m){
+	T[] tArr =(T[]) new Object[m.h*m.l];
+	//for(int i=0;i<m.h*m.l;i++){tArr[i]=(T)new Object();}//vanno creati esplicitamente altrementi solo reference
   System.arraycopy(m.raw_matrix,0,tArr,0,m.h*m.l);
 	  return tArr;
 }*/
 
+//qua va messo a double perche non riesce a fare op con T, provato anche con interfaccia
 private double VectProd(matrix<?> m1, int row, matrix<?>  m2, int col){
 	double sum= 0.0;
 	 for (int i = 0; i < m2.h; i++){
@@ -72,8 +73,7 @@ private double VectProd(matrix<?> m1, int row, matrix<?>  m2, int col){
 		 String s2=m2.raw_matrix[col + m2.l * i].toString();
 		 double a=Double.parseDouble(s1);
 		 double b=Double.parseDouble(s2);
-		 sum+=a*b;
-		  
+		 sum+=a*b;	  
 	  }
 	  return sum;
 }
@@ -85,7 +85,7 @@ public matrix(matrix m){//non testato, non compila
 		raw_matrix=copyArr(m);
 }	
 */
-//distruttore eliminato
+//distruttore eliminato, non serve
 
 public boolean sameDim(matrix<?> m){
 	  return (h == m.h && l == m.l);
@@ -104,7 +104,6 @@ public boolean equalsTo(matrix<?> m){
 }
 
 
- 
 //overloding operatori: non supportati overloading classici 
 public  matrix add(matrix<?> s){//ok
 	if ((sameDim(s))==false){
