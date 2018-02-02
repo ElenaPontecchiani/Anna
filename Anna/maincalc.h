@@ -19,6 +19,7 @@ signals:
 
 public slots:
     void somma();
+    void molt();
 };
 
 #endif // MAINCALC_H

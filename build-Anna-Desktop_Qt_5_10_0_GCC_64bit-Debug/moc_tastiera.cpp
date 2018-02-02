@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Tastiera_t {
-    QByteArrayData data[9];
-    char stringdata0[55];
+    QByteArrayData data[11];
+    char stringdata0[71];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,11 +39,13 @@ QT_MOC_LITERAL(4, 26, 6), // "gaussj"
 QT_MOC_LITERAL(5, 33, 4), // "radX"
 QT_MOC_LITERAL(6, 38, 5), // "coeff"
 QT_MOC_LITERAL(7, 44, 4), // "powX"
-QT_MOC_LITERAL(8, 49, 5) // "plusX"
+QT_MOC_LITERAL(8, 49, 5), // "plusX"
+QT_MOC_LITERAL(9, 55, 7), // "sendRad"
+QT_MOC_LITERAL(10, 63, 7) // "sendPow"
 
     },
     "Tastiera\0trasposta\0\0gauss\0gaussj\0radX\0"
-    "coeff\0powX\0plusX"
+    "coeff\0powX\0plusX\0sendRad\0sendPow"
 };
 #undef QT_MOC_LITERAL
 
@@ -53,7 +55,7 @@ static const uint qt_meta_data_Tastiera[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -61,12 +63,16 @@ static const uint qt_meta_data_Tastiera[] = {
        6,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   44,    2, 0x06 /* Public */,
-       3,    0,   45,    2, 0x06 /* Public */,
-       4,    0,   46,    2, 0x06 /* Public */,
-       5,    1,   47,    2, 0x06 /* Public */,
-       7,    1,   50,    2, 0x06 /* Public */,
-       8,    1,   53,    2, 0x06 /* Public */,
+       1,    0,   54,    2, 0x06 /* Public */,
+       3,    0,   55,    2, 0x06 /* Public */,
+       4,    0,   56,    2, 0x06 /* Public */,
+       5,    1,   57,    2, 0x06 /* Public */,
+       7,    1,   60,    2, 0x06 /* Public */,
+       8,    1,   63,    2, 0x06 /* Public */,
+
+ // slots: name, argc, parameters, tag, flags
+       9,    0,   66,    2, 0x0a /* Public */,
+      10,    0,   67,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -75,6 +81,10 @@ static const uint qt_meta_data_Tastiera[] = {
     QMetaType::Void, QMetaType::Double,    6,
     QMetaType::Void, QMetaType::Double,    6,
     QMetaType::Void, QMetaType::Double,    6,
+
+ // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -91,6 +101,8 @@ void Tastiera::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 3: _t->radX((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 4: _t->powX((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 5: _t->plusX((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 6: _t->sendRad(); break;
+        case 7: _t->sendPow(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -165,13 +177,13 @@ int Tastiera::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 8)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 6;
+        _id -= 8;
     }
     return _id;
 }

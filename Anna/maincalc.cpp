@@ -3,6 +3,7 @@
 #include "../Parte_Logica/matrix.h"
 #include <QApplication>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QPushButton>
 
 MainCalc::MainCalc(QWidget *parent) : QWidget(parent)
@@ -13,13 +14,23 @@ MainCalc::MainCalc(QWidget *parent) : QWidget(parent)
     princ = dynamic_cast<Matrice_Input*>(w);
     aux = dynamic_cast<Matrice_Input*>(y);
 
-    QPushButton* p = new QPushButton("Somma",this);
+    QVBoxLayout* tasti = new QVBoxLayout();
+
+    QPushButton* somma = new QPushButton("Somma",this);
+    QPushButton* molt = new QPushButton("Moltiplicazione",this);
+
+    connect(somma,SIGNAL(released()),this,SLOT(somma()));
+    connect(molt,SIGNAL(released()),this,SLOT(molt()));
+
+
+    tasti->addWidget(somma);
+    tasti->addWidget(molt);
+
     QHBoxLayout* b = new QHBoxLayout();
     b->addWidget(w);
-    b->addWidget(p);
+    b->addLayout(tasti);
     b->addWidget(y);
 
-    connect(p,SIGNAL(released()),this,SLOT(somma()));
 
     setLayout(b);
 };
@@ -27,5 +38,14 @@ MainCalc::MainCalc(QWidget *parent) : QWidget(parent)
 
 void MainCalc::somma(){
     *(princ->getMat()) = *(princ->getMat()) + *(aux->getMat());
+    princ->upMat();
+}
+
+void MainCalc::molt(){
+    *(princ->getMat()) = (*(princ->getMat())) * (*(aux->getMat()));
+    matrix<double> cp = *(princ->getMat());
+    princ->newMat(princ->getMat()->getH(),princ->getMat()->getL());
+    *(princ->getMat()) = cp;
+
     princ->upMat();
 }

@@ -28,6 +28,11 @@ public:
 signals:
 
 public slots:
+    void plusRow();
+    void plusColumn();
+    void minusRow();
+    void minusColumn();
+
     void upMat();
     void modEl(QTableWidgetItem *item);
     void newMat(int r,int c);

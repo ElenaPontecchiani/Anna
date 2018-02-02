@@ -9,7 +9,9 @@
 #include <QString>
 #include <QLabel>
 #include <QRegExpValidator>
+#include <QPushButton>
 #include <math.h>
+#include <QHeaderView>
 
 
 class Delegate : public QItemDelegate
@@ -34,23 +36,39 @@ Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
     mat = 0;
     tab = 0;
     tast = new Tastiera(this);
-    /*QRegExp qr("[1-9]{1,1}[0-9]{1,1}");
-    QRegExpValidator* qrv = new QRegExpValidator(qr,this);*/
+
     QHBoxLayout* size = new QHBoxLayout();
-    QLineEdit* rows = new QLineEdit(this);
-    QLineEdit* columns = new QLineEdit(this);
-    rows->setValidator(new QIntValidator(1,50,rows));
-    columns->setValidator(new QIntValidator(1,50,columns));
-    rows->setText(QString::number(r));
-    columns->setText(QString::number(c));
-    connect(rows,SIGNAL(textChanged(QString)),this,SLOT(changeRow(QString)));
-    connect(columns,SIGNAL(textChanged(QString)),this,SLOT(changeCol(QString)));
-    size->addWidget(rows);
-    size->addWidget(columns);
+
+    QLabel* rig = new QLabel("Righe",this);
+    QLabel* col = new QLabel("Colonne",this);
+
+    QPushButton* plusrow = new QPushButton("+",this);
+    QPushButton* minurow = new QPushButton("-",this);
+    QPushButton* pluscol = new QPushButton("+",this);
+    QPushButton* minucol = new QPushButton("-",this);
+
+    connect(plusrow,SIGNAL(released()),this,SLOT(plusRow()));
+    connect(minurow,SIGNAL(released()),this,SLOT(minusRow()));
+    connect(pluscol,SIGNAL(released()),this,SLOT(plusColumn()));
+    connect(minucol,SIGNAL(released()),this,SLOT(minusColumn()));
+
+    size->addWidget(rig);
+    size->addWidget(minurow);
+    size->addWidget(plusrow);
+    size->addWidget(col);
+    size->addWidget(minucol);
+    size->addWidget(pluscol);
 
     newMat(r,c);
     det = new QLabel(detText(),this);
     connect(tab,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(modEl(QTableWidgetItem*)));
+
+    QHeaderView *oriz = new QHeaderView(Qt::Horizontal,tab);
+    QHeaderView *vert = new QHeaderView(Qt::Vertical,tab);
+    vert->setSectionResizeMode(QHeaderView::Stretch);
+    oriz->setSectionResizeMode(QHeaderView::Stretch);
+    tab->setHorizontalHeader(oriz);
+    tab->setVerticalHeader(vert);
 
 
     QVBoxLayout *lay = new QVBoxLayout(this);
@@ -74,7 +92,6 @@ void Matrice_Input::newMat(int r, int c){
     else
         mat = new matrix<double>(r,c);
     mat->Fill(0);
-
     tab->setRowCount(mat->getH());
     tab->setColumnCount(mat->getL());
     upMat();
@@ -157,6 +174,31 @@ void Matrice_Input::inv(){
             upMat();
         }
     }
+}
+
+
+void Matrice_Input::plusRow(){
+    if (mat->getH() < 50)
+        newMat(mat->getH()+1,mat->getL());
+    upMat();
+}
+
+void Matrice_Input::plusColumn(){
+    if (mat->getL() < 50)
+        newMat(mat->getH(),mat->getL()+1);
+    upMat();
+}
+
+void Matrice_Input::minusRow(){
+    if (mat->getH() > 1)
+        newMat(mat->getH()-1,mat->getL());
+    upMat();
+}
+
+void Matrice_Input::minusColumn(){
+    if (mat->getL() > 1)
+        newMat(mat->getH(),mat->getL()-1);
+    upMat();
 }
 
 
