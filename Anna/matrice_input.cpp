@@ -2,6 +2,7 @@
 #include "../Parte_Logica/matrix.h"
 #include "../Parte_Logica/square_matrix.h"
 #include "../Parte_Logica/vector.h"
+#include "../Parte_Logica/diagonal_matrix.h"
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QItemDelegate>
@@ -12,6 +13,7 @@
 #include <QRegExpValidator>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QCheckBox>
 #include <math.h>
 #include "../Parte_Logica/vector.h"
 #include <QHeaderView>
@@ -44,6 +46,7 @@ Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
 
     QLabel* rig = new QLabel("Righe",this);
     QLabel* col = new QLabel("Colonne",this);
+    dg = new QCheckBox("Diagonale",this);
 
     QPushButton* plusrow = new QPushButton("+",this);
     QPushButton* minurow = new QPushButton("-",this);
@@ -61,6 +64,7 @@ Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
     size->addWidget(col);
     size->addWidget(minucol);
     size->addWidget(pluscol);
+    size->addWidget(dg);
 
     newMat(r,c);
     det = new QLabel(detText(),this);
@@ -92,8 +96,12 @@ void Matrice_Input::newMat(int r, int c){
 
     if(r == 1 || c == 1)
         mat = new vector<double>(r,c);
-    else if (r == c)
-        mat = new square_matrix<double>(r);
+    else if (r == c){
+        if (!dg->isChecked())
+            mat = new square_matrix<double>(r);
+        else
+            mat = new diagonal_matrix<double>(r);
+    }
     else
         mat = new matrix<double>(r,c);
     mat->Fill(0);

@@ -9,6 +9,7 @@
 #include <QTableWidget>
 #include <QLabel>
 #include <QString>
+#include <QCheckBox>
 #include "tastiera.h"
 
 class Tastiera;
@@ -21,6 +22,7 @@ private:
     QTableWidget* tab;
     QLabel* det;
     Tastiera* tast;
+    QCheckBox* dg;
 public:
     explicit Matrice_Input(int r, int c, QWidget *parent = nullptr);
     QString detText()const;
