@@ -1,6 +1,7 @@
 #include "matrice_input.h"
 #include "../Parte_Logica/matrix.h"
 #include "../Parte_Logica/square_matrix.h"
+#include "../Parte_Logica/vector.h"
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QItemDelegate>
@@ -10,7 +11,9 @@
 #include <QLabel>
 #include <QRegExpValidator>
 #include <QPushButton>
+#include <QMessageBox>
 #include <math.h>
+#include "../Parte_Logica/vector.h"
 #include <QHeaderView>
 
 
@@ -87,7 +90,9 @@ void Matrice_Input::newMat(int r, int c){
     if(mat)
         delete mat;
 
-    if (r == c)
+    if(r == 1 || c == 1)
+        mat = new vector<double>(r,c);
+    else if (r == c)
         mat = new square_matrix<double>(r);
     else
         mat = new matrix<double>(r,c);
@@ -139,10 +144,9 @@ matrix<double>* Matrice_Input::getMat()const{
 
 void Matrice_Input::trasposta(){
     mat->Trasposta();
-    matrix<double>* cp = mat->clone();
+    matrix<double> cp = *mat;
     newMat(mat->getH(),mat->getL());
-    delete mat;
-    mat = cp;
+    *mat = cp;
     upMat();
 }
 
@@ -167,14 +171,34 @@ void Matrice_Input::powX(double d){
 }
 
 void Matrice_Input::inv(){
+    bool ok = false;
     square_matrix<double>* p = dynamic_cast<square_matrix<double>*>(mat);
     if(p){
         if (p->Det() != 0){
             p->Inversa();
             upMat();
+            ok = true;
         }
     }
+    if (!ok)
+        warning("La matrice non è invertibile");
 }
+
+void Matrice_Input::norm(){
+    vector<double>* p = dynamic_cast<vector<double>*>(mat);
+    if(p){
+        vector<double> v = *p;
+        v.Fill(0);
+        if(!(v == *p)){
+            p->Normalize();
+            upMat();
+        }
+        else
+            warning("Non puoi normalizzare lo zero!");
+    }
+    else
+        warning("La matrice che vuoi normalizzare non è un vettore");
+};
 
 
 void Matrice_Input::plusRow(){
@@ -199,6 +223,14 @@ void Matrice_Input::minusColumn(){
     if (mat->getL() > 1)
         newMat(mat->getH(),mat->getL()-1);
     upMat();
+}
+
+void Matrice_Input::warning(const QString& qs){
+    /* Warning, live withot warning
+     * without*/
+    QMessageBox msgBox;
+    msgBox.setText(qs);
+    msgBox.exec();
 }
 
 

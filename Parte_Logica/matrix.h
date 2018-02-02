@@ -44,6 +44,7 @@ public:
     matrix<T> operator-(const matrix<T>&)const;
     matrix<T> operator*(const matrix<T>&)const;
     bool sameDim(const matrix<T>&)const;
+    bool isMultBy(const matrix<T>&)const;
 
     //Operazioni generali su matrici
     virtual void Trasposta();
@@ -398,6 +399,11 @@ void matrix<T>::Append(const matrix<T>& m1){
 template <class T>
 bool matrix<T>::sameDim(const matrix<T>& m)const{
   return (h==m.h && l==m.l);
+}
+
+template <class T>
+bool matrix<T>::isMultBy(const matrix<T>& m)const{
+    return (h==m.l);
 }
 
 template <class T>

@@ -5,6 +5,7 @@
 #include "maincalc.h"
 #include "matrice_input.h"
 #include "../Parte_Logica/matrix.h"
+#include <QString>
 
 class MainCalc : public QWidget
 {
@@ -19,7 +20,9 @@ signals:
 
 public slots:
     void somma();
+    void diff();
     void molt();
+    void copy();
 };
 
 #endif // MAINCALC_H

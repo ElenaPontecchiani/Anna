@@ -25,6 +25,7 @@ public:
     explicit Matrice_Input(int r, int c, QWidget *parent = nullptr);
     QString detText()const;
     matrix<double>* getMat()const;
+    static void warning(const QString& qs);
 signals:
 
 public slots:
@@ -45,6 +46,7 @@ public slots:
     void radX(double d);
     void powX(double d);
     void inv();
+    void norm();
 };
 
 #endif // MATRICE_INPUT_H
