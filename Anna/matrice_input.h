@@ -21,16 +21,21 @@ private:
     matrix<double>* mat;
     QTableWidget* tab;
     QLabel* det;
+    QLabel *tipo;
     Tastiera* tast;
-    QCheckBox* dg;
 public:
     explicit Matrice_Input(int r, int c, QWidget *parent = nullptr);
     QString detText()const;
+    QString tipoText()const;
     matrix<double>* getMat()const;
     static void warning(const QString& qs);
+    void tabRes(int h, int l);
 signals:
 
 public slots:
+    void rectify();
+    void matResize(int r, int c);
+
     void plusRow();
     void plusColumn();
     void minusRow();

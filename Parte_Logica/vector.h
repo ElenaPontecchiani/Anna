@@ -8,6 +8,7 @@ template<class T>
 class vector: public matrix<T>{
 public:
     vector(int height, int lenght);
+    vector(const matrix<T>& t);
 
     vector<T> operator=(const vector<T>&);
 
@@ -21,6 +22,9 @@ public:
 
 template <class T>
 vector<T>::vector(int height, int length):matrix<T>(height,length){}
+
+template <class T>
+vector<T>::vector(const matrix<T>& t):matrix<T>(t){}
 
 template <class T>
 bool vector<T>::isRow()const{

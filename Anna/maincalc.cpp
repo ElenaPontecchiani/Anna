@@ -20,14 +20,17 @@ MainCalc::MainCalc(QWidget *parent) : QWidget(parent)
     QPushButton* diff = new QPushButton("Differenza",this);
     QPushButton* molt = new QPushButton("Moltiplicazione",this);
     QPushButton* copy = new QPushButton("<- Copia <-",this);
+    QPushButton* copy2 = new QPushButton("-> Copia ->",this);
 
     connect(copy,SIGNAL(released()),this,SLOT(copy()));
+    connect(copy2,SIGNAL(released()),this,SLOT(copy2()));
     connect(somma,SIGNAL(released()),this,SLOT(somma()));
     connect(diff,SIGNAL(released()),this,SLOT(diff()));
     connect(molt,SIGNAL(released()),this,SLOT(molt()));
 
 
     tasti->addWidget(copy);
+    tasti->addWidget(copy2);
     tasti->addWidget(somma);
     tasti->addWidget(molt);
     tasti->addWidget(diff);
@@ -80,6 +83,12 @@ void MainCalc::copy(){
 
 }
 
+void MainCalc::copy2(){
+    aux->newMat((*(princ->getMat())).getH(),(*(princ->getMat())).getL());
+    *(aux->getMat()) = *(princ->getMat());
+    aux->upMat();
+
+}
 
 
 

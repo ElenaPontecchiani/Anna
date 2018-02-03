@@ -23,6 +23,7 @@ public slots:
     void diff();
     void molt();
     void copy();
+    void copy2();
 };
 
 #endif // MAINCALC_H

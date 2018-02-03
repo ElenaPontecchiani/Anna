@@ -11,6 +11,7 @@ public:
 
     diagonal_matrix(int);
     diagonal_matrix(int,const T& t);
+    diagonal_matrix(const matrix<T>& t);
 
 
     diagonal_matrix<T> operator+(const diagonal_matrix<T>&)const;
@@ -49,6 +50,8 @@ diagonal_matrix<T>::diagonal_matrix(int dim, const T& t): square_matrix<T>(dim){
     (*this)[i*dim+i] = t;
 }
 
+template <class T>
+diagonal_matrix<T>::diagonal_matrix(const matrix<T>& t): square_matrix<T>(t){}
 
 //////////////////////////////
 //  O P   O V E R L O A D   //

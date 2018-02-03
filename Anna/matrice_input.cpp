@@ -46,7 +46,7 @@ Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
 
     QLabel* rig = new QLabel("Righe",this);
     QLabel* col = new QLabel("Colonne",this);
-    dg = new QCheckBox("Diagonale",this);
+    tipo = new QLabel("Tipo");
 
     QPushButton* plusrow = new QPushButton("+",this);
     QPushButton* minurow = new QPushButton("-",this);
@@ -64,7 +64,7 @@ Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
     size->addWidget(col);
     size->addWidget(minucol);
     size->addWidget(pluscol);
-    size->addWidget(dg);
+
 
     newMat(r,c);
     det = new QLabel(detText(),this);
@@ -80,6 +80,7 @@ Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
 
     QVBoxLayout *lay = new QVBoxLayout(this);
     lay->addLayout(size);
+    lay->addWidget(tipo);
     lay->addWidget(tab);
     lay->addWidget(det);
     lay->addWidget(tast);
@@ -94,20 +95,15 @@ void Matrice_Input::newMat(int r, int c){
     if(mat)
         delete mat;
 
-    if(r == 1 || c == 1)
-        mat = new vector<double>(r,c);
-    else if (r == c){
-        if (!dg->isChecked())
-            mat = new square_matrix<double>(r);
-        else
-            mat = new diagonal_matrix<double>(r);
-    }
-    else
-        mat = new matrix<double>(r,c);
+    mat = new matrix<double>(r,c);
     mat->Fill(0);
-    tab->setRowCount(mat->getH());
-    tab->setColumnCount(mat->getL());
+    tabRes(mat->getH(),mat->getL());
     upMat();
+}
+
+void Matrice_Input::tabRes(int h, int l){
+    tab->setRowCount(h);
+    tab->setColumnCount(l);
 }
 
 void Matrice_Input::changeCol(QString qs){
@@ -133,6 +129,8 @@ void Matrice_Input::modEl(QTableWidgetItem *item){
     item->setText(item->text().replace(",","."));
     (*mat)[item->row()*mat->getL()+item->column()] = (item->text()).QString::toDouble();
     det->setText(detText());
+    tipo->setText(tipoText());
+    rectify();
     //cout << *mat << endl << endl;
 }
 
@@ -143,6 +141,18 @@ QString Matrice_Input::detText() const{
         return ("Determinante non disponibile");
     else
         return "Determinante: " + QString::number(p->Det());
+}
+
+QString Matrice_Input::tipoText() const{
+    if(dynamic_cast<vector<double>*>(mat))
+        return "Vettore";
+    if(dynamic_cast<scalar_matrix<double>*>(mat))
+        return "Matrice Scalare";
+    if(dynamic_cast<diagonal_matrix<double>*>(mat))
+        return "Matrice Diagonale";
+    if(dynamic_cast<square_matrix<double>*>(mat))
+        return "Matrice Quadrata";
+    return "Matrice Ordinaria";
 }
 
 matrix<double>* Matrice_Input::getMat()const{
@@ -208,38 +218,111 @@ void Matrice_Input::norm(){
         warning("La matrice che vuoi normalizzare non è un vettore");
 };
 
+void Matrice_Input::matResize(int r, int c){
+    if (r > 0){
+        matrix<double> temp(r,mat->getL());
+        temp.Fill(0);
+        mat->AppendDown(temp);
+    }
+    else if (r < 0){
+        mat->Cut(0,mat->getH()+r,0,mat->getL());
+    }
+
+    if (c > 0){
+        matrix<double> temp(mat->getH(),c);
+        temp.Fill(0);
+        mat->Append(temp);
+    }
+    else if (c < 0){
+        mat->Cut(0,mat->getH(),0,mat->getL()+c);
+    }
+
+    rectify();
+    tabRes(mat->getH(),mat->getL());
+    upMat();
+}
+
 
 void Matrice_Input::plusRow(){
     if (mat->getH() < 50)
-        newMat(mat->getH()+1,mat->getL());
-    upMat();
+        matResize(1,0);
 }
 
 void Matrice_Input::plusColumn(){
     if (mat->getL() < 50)
-        newMat(mat->getH(),mat->getL()+1);
-    upMat();
+        matResize(0,1);
 }
 
 void Matrice_Input::minusRow(){
     if (mat->getH() > 1)
-        newMat(mat->getH()-1,mat->getL());
-    upMat();
+        matResize(-1,0);
 }
 
 void Matrice_Input::minusColumn(){
     if (mat->getL() > 1)
-        newMat(mat->getH(),mat->getL()-1);
-    upMat();
+        matResize(0,-1);
 }
 
 void Matrice_Input::warning(const QString& qs){
-    /* Warning, live withot warning
-     * without*/
+    /*  Warning, live without warning
+    *
+    *   Without, alright
+    *
+    *   This is a public service announcement
+    *   This is only a test
+    */
     QMessageBox msgBox;
     msgBox.setText(qs);
     msgBox.exec();
 }
+
+
+void Matrice_Input::rectify(){
+    int r = mat->getH();
+    int c= mat->getL();
+
+    if ( r == 1 || c == 1 ){ //Vettore
+        matrix<double>* temp = new vector<double>(*mat);
+        delete mat;
+        mat = temp;
+    }
+    else if ( r == c ){ //Matrice non ordinaria
+        bool diag = true;
+        for(int ir = 0; ir < r && diag; ir++)
+            for(int ic = 0; ic < c && diag; ic++)
+                if ( ir != ic && (*mat)[ir*c+ic] != 0)
+                    diag = false;
+        if (diag){ //Diagonale o scalare
+            bool scal = true;
+            double test = (*mat)[0];
+            for(int i = 0; i < r && scal; i++)
+                if (test != (*mat)[i*c+i])
+                    scal = false;
+            if (scal){  //scalare
+                matrix<double>* temp = new scalar_matrix<double>(*mat);
+                delete mat;
+                mat = temp;
+            }
+            else{   //diagonale
+                matrix<double>* temp = new diagonal_matrix<double>(*mat);
+                delete mat;
+                mat = temp;
+            }
+        }
+        else{ //quadrata
+            matrix<double>* temp = new square_matrix<double>(*mat);
+            delete mat;
+            mat = temp;
+        }
+    }
+    else{ //Matrice ordinaria
+        matrix<double>* temp = new matrix<double>(*mat);
+        delete mat;
+        mat = temp;
+    }
+}
+
+
 
 
 

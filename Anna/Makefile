@@ -436,7 +436,8 @@ matrice_input.o: matrice_input.cpp matrice_input.h \
 		../Parte_Logica/square_matrix.h \
 		../Parte_Logica/scalar_matrix.h \
 		../Parte_Logica/diagonal_matrix.h \
-		tastiera.h
+		tastiera.h \
+		../Parte_Logica/vector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o matrice_input.o matrice_input.cpp
 
 tastiera.o: tastiera.cpp tastiera.h \

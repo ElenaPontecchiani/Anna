@@ -10,6 +10,7 @@ private:
 public:
 
     scalar_matrix(int, const T& =0);
+    scalar_matrix(const matrix<T>& t);
     virtual T Det ()const;
 };
 
@@ -22,6 +23,8 @@ public:
 template <class T>
 scalar_matrix<T>::scalar_matrix(int dim, const T& t): diagonal_matrix<T>(dim,t){}
 
+template <class T>
+scalar_matrix<T>::scalar_matrix(const matrix<T>& t): diagonal_matrix<T>(t){}
 
 //////////////////////////////
 //   O P E R A Z I O N I    //

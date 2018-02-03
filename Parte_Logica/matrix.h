@@ -56,6 +56,7 @@ public:
     void Fill(const T& t);
     void Cut(int row_start, int row_num, int col_start, int col_num);
     void Append(const matrix<T>& m1);
+    void AppendDown(const matrix<T>& m1);
 
     //Metodi utili per l'el. di Gauss
     void swap(int r1, int r2);
@@ -393,6 +394,22 @@ void matrix<T>::Append(const matrix<T>& m1){
       pos++;
     }
   }
+  *this = temp;
+}
+
+
+template <class T>
+void matrix<T>::AppendDown(const matrix<T>& m1){
+  if(m1.l != l)
+    std::cout << "PROBLEMA VEZZZ";
+  int pos = 0;
+  matrix<T> temp(h + m1.h,m1.l);
+  int i = 0;
+  for(; i < l*h; i++)
+      temp[i] = (*this)[i];
+  for(; i < temp.h*temp.l; i++)
+      temp[i] = m1[i - l*h];
+
   *this = temp;
 }
 
