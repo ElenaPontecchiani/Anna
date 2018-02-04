@@ -46,7 +46,7 @@ Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
 
     QLabel* rig = new QLabel("Righe",this);
     QLabel* col = new QLabel("Colonne",this);
-    tipo = new QLabel("Tipo");
+    tipo = new QLabel(this);
 
     QPushButton* plusrow = new QPushButton("+",this);
     QPushButton* minurow = new QPushButton("-",this);
@@ -85,13 +85,16 @@ Matrice_Input::Matrice_Input(int r, int c, QWidget *parent) :QWidget(parent)
     lay->addWidget(det);
     lay->addWidget(tast);
     setLayout(lay);
+
+    tipo->setText(tipoText());
 }
 
 
 void Matrice_Input::newMat(int r, int c){
-    if(!tab)
+    if(!tab){
         tab = new QTableWidget(this);
-
+        tab->setItemDelegate(new Delegate);
+    }
     if(mat)
         delete mat;
 
@@ -122,16 +125,14 @@ void Matrice_Input::upMat(){
             tab->setItem(r, c, new QTableWidgetItem(QString::number((*mat)[r*mat->getL()+c])));
 }
 
-#include <iostream>
 using std::cout;
 using std::endl;
 void Matrice_Input::modEl(QTableWidgetItem *item){
     item->setText(item->text().replace(",","."));
     (*mat)[item->row()*mat->getL()+item->column()] = (item->text()).QString::toDouble();
     det->setText(detText());
-    tipo->setText(tipoText());
     rectify();
-    //cout << *mat << endl << endl;
+    tipo->setText(tipoText());
 }
 
 
@@ -143,6 +144,7 @@ QString Matrice_Input::detText() const{
         return "Determinante: " + QString::number(p->Det());
 }
 
+#include <typeinfo>
 QString Matrice_Input::tipoText() const{
     if(dynamic_cast<vector<double>*>(mat))
         return "Vettore";
