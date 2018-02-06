@@ -8,8 +8,7 @@ public class Matrix{
 public Matrix(){//volendo si può togliere
      h=0;
 	 l=0;
-	 rawMatrix =new Object[0];	
-	}
+	 rawMatrix =new Object[0];}
 
 public Matrix(int height, int length){
      if(height<=0) {h=1;}
@@ -98,8 +97,7 @@ public final static Object vectProd(Matrix m1, int row, Matrix  m2, int col){
 public final void copy(Matrix m){//non esiste costrutto di default, OK!!
 	    h = m.h;
 		l = m.l;
-		rawMatrix=copyArr(m);
-		
+		rawMatrix=copyArr(m);	
 }	
 
 //distruttore eliminato, non serve
