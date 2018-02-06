@@ -52,7 +52,7 @@ if ((sameDim(s))==false){
 throw new DimensioniNonCorrette();}
 else{
 	  DiagonalMatrix temp = new DiagonalMatrix(getL());
-	  temp.fill(null);
+	  temp.copy(this);
 	  for (int i = 0; i < getL(); i++){
 		double a=ObjToDouble(temp.getEl(i * getL() + i));
 		double b=ObjToDouble(s.getEl(i * getL() + i));

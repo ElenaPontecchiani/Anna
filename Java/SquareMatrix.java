@@ -24,7 +24,7 @@ public final boolean isInvertible()throws IndiceNonCorretto{
 public final void Inversa()throws IndiceNonCorretto,DimensioniNonCorrette{
 		//return *(addId().gaussJordan(this->getH())->cut(0,this->getH(),this->getH(),this->getH()*2));
 		this.addId();
-		this.gaussJordan(this.getH());
+		this.gaussJordan(this.getL());
 		this.cut(0, this.getH(), this.getH(), this.getH() * 2);
 	}
 
