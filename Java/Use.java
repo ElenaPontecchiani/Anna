@@ -49,7 +49,6 @@ public static void main(String [ ] args)throws DimensioniNonCorrette,IndiceNonCo
 	boolean bool2=v.isColumn();
 	v.Normalize();
 
-
 }
 
 

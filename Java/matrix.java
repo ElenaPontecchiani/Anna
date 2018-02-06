@@ -356,7 +356,7 @@ public int counZeroInLine(int r){
 		 }
 	return tot;
 }	
-
+/*
 public void gauss(int col_num)throws IndiceNonCorretto{
 	int[]q=orderRaw();//q per ogni riga dice quanti 0 prima di el !=0
 	//per prima riga diversa tt zeri: metto a 1 primo el !=0 poi per altre sottaggo alla prima riga
@@ -380,6 +380,73 @@ public void gauss(int col_num)throws IndiceNonCorretto{
 			double d=ObjToDouble(rawMatrix[in]);}
 		}		
 	q=orderRaw();	
+}*/
+
+
+public void gauss(int col_num)throws IndiceNonCorretto{
+  if (col_num == -1)
+    col_num = l;
+  int c = 0;
+  for(int r = 0; r < h && c < col_num; r++){
+    if(ObjToDouble(rawMatrix[r*l+c]) == 0){
+      swap(r,maxCoeff(r,c));
+      while (ObjToDouble(rawMatrix[maxCoeff(r,c)*l+c])== 0 && c < col_num)
+        c++;
+    }
+
+    for(int i = r; i < h && c < col_num; i++)
+      if(ObjToDouble(rawMatrix[i*l+c]) != 0){
+        divRow(i,ObjToDouble(rawMatrix[i*l+c]));
+      }
+
+
+    for(int i = r + 1; i < h && c < col_num; i++)
+      if(ObjToDouble(rawMatrix[i*l+c]) != 0)
+        subRow(i,r,1);
+
+    approxZero();
+
+    c++;
+  }
+
+  for(int r = 0; r < h; r++){
+      int minzeroInd = r;
+      int minzero = col_num+1;
+      for(int i = r; i < h; i++){
+          int zeros = 0;
+          for(int j = 0; j < c && ObjToDouble(rawMatrix[i*l+j]) == 0; j++){
+              zeros++;
+          }
+          if (zeros < minzero){
+              minzero = zeros;
+              minzeroInd = i;
+          }
+      }
+      if (minzeroInd != r)
+          swap(r,minzeroInd);
+  }
+
+}
+
+
+public void gaussJordan(int col_num)throws IndiceNonCorretto{
+  if (col_num == -1)
+    col_num = l;
+  gauss(col_num);
+
+  int r = h - 1;
+  int rd;
+  for(int c = col_num - 1; c >= 0 && r > 0; c--){
+    rd = r;
+    while( ObjToDouble(rawMatrix[rd*l+c]) != 1 && rd > 0 )
+      rd--;
+    if (rd > 0){
+      for(int i = rd - 1; i >= 0; i--){
+        subRow(i,rd,ObjToDouble(rawMatrix[i*l+c]));
+      }
+      r--;
+    }
+  }
 }
 	
 public int searchRow(int col, int rig){
@@ -390,7 +457,7 @@ public int searchRow(int col, int rig){
 	}
 return -1;
 }
-
+/*
 public void gaussJordan(int col_num)throws IndiceNonCorretto{
 	  gauss(col_num);
 	  boolean unoInColonna=false;
@@ -406,7 +473,7 @@ public void gaussJordan(int col_num)throws IndiceNonCorretto{
 		  }
 		 }
 	}
-}
+}*/
 
 
 public final void approxZero()throws IndiceNonCorretto{
