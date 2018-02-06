@@ -310,6 +310,8 @@ void matrix<T>::subRow(int r1, int r2, T coeff){
 
 
 
+
+
 template <class T>
 void matrix<T>::Gauss(int col_num){
   if (col_num == -1)
@@ -318,24 +320,42 @@ void matrix<T>::Gauss(int col_num){
   for(int r = 0; r < h && c < col_num; r++){
     if(raw_matrix[r*l+c] == 0){
       swap(r,maxCoeff(r,c));
-      while (raw_matrix[maxCoeff(r,c)*l+c] == 0)
-      c++;
+      while (raw_matrix[maxCoeff(r,c)*l+c] == 0 && c < col_num)
+        c++;
     }
 
-    for(int i = r; i < h; i++)
+    for(int i = r; i < h && c < col_num; i++)
       if(raw_matrix[i*l+c] != 0){
         divRow(i,raw_matrix[i*l+c]);
       }
 
 
-    for(int i = r + 1; i < h; i++)
+    for(int i = r + 1; i < h && c < col_num; i++)
       if(raw_matrix[i*l+c] != 0)
-        subRow(i,r);
+        subRow(i,r,1);
 
     approxZero();
 
     c++;
   }
+
+  for(int r = 0; r < h; r++){
+      int minzeroInd = r;
+      int minzero = col_num+1;
+      for(int i = r; i < h; i++){
+          int zeros = 0;
+          for(int j = 0; j < c && raw_matrix[i*l+j] == 0; j++){
+              zeros++;
+          }
+          if (zeros < minzero){
+              minzero = zeros;
+              minzeroInd = i;
+          }
+      }
+      if (minzeroInd != r)
+          swap(r,minzeroInd);
+  }
+
 }
 
 template <class T>
