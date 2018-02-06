@@ -171,7 +171,7 @@ void Matrice_Input::trasposta(){
 }
 
 void Matrice_Input::gauss(){
-    mat->Gauss();
+    mat->Gauss(-1);
     upMat();
 }
 
