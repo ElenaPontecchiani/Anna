@@ -46,6 +46,11 @@ public  void Output()
 	}
 } 
 
+public void fillRawMatrix(Object[] ob){
+	System.arraycopy(ob,0,rawMatrix,0,h*l);
+}
+
+
  //metodi final get
  public final int getH(){
 	return h;}
@@ -138,7 +143,7 @@ public  Matrix add(Matrix s)throws DimensioniNonCorrette{//ok
 }}
 	
 
-public Matrix subtract(Matrix m)throws DimensioniNonCorrette{//ok
+public Matrix substract(Matrix m)throws DimensioniNonCorrette{//ok
   if ((sameDim(m))==false){
 		throw new DimensioniNonCorrette();
 	  }
@@ -267,7 +272,7 @@ public final void appendDown(Matrix m1)throws DimensioniNonCorrette, IndiceNonCo
 	
 public final void swap(int r1, int r2){
 	  if (r1 != r2){
-		Object temp = null;
+		Object temp = 0.0;
 		for (int c = 0; c <l; c++){
 		  temp = rawMatrix[r1 * l + c];
 		  rawMatrix[r1*l+c] = rawMatrix[r2*l+c];
@@ -309,42 +314,109 @@ public final void subRow(int r1, int r2, double coeff){
 	  for (int c = 0; c < l; c++){
 		  double a=ObjToDouble(rawMatrix[r1 * l + c]);
 		  double b=ObjToDouble(rawMatrix[r2 * l + c]);
-		rawMatrix[r1 * l + c] =(Object)((a-b)* coeff);//////////////////////////////////////////////provato a a cambiare per vedere se funzia
+		rawMatrix[r1 * l + c] =(a-b* coeff);
 	  }
 	}
+
+public int[] orderRaw(){
+	boolean primaZero=false;int [] q=new int[h];
+	for(int r=0;r<h;r++){
+		q[r]=counZeroInLine(r);
+	 }
+    
+  for(int r=0;r<h;r++){
+	  if(q[r]>0){
+		  for(int r1=r+1;r1<h;r1++){	 
+			  if(q[r]>q[r1]){
+				  swap(r,r1);
+				  int tt=r1;r1=r;r=tt;
+				  int temp=q[r1];
+				  q[r1]=q[r];
+				  q[r]=temp;
+				  r--;
+				 }
+		   
+		  }
+	  }
 	
+  }
+
+	return q; 
+}
+	
+public int counZeroInLine(int r){
+	boolean primaZero=false;
+	int tot=0;
+	for(int i=0;i<l;i++){
+			 if((primaZero==true) &&(ObjToDouble(rawMatrix[r*l+i])!=0.0)){primaZero=false;}
+			 else{
+			 if(ObjToDouble(rawMatrix[r*l+i])==0.0){
+				 if(i==0) {primaZero=true;tot++;} 
+				 else{if(primaZero==true){tot++;} }
+			 }  
+		 }
+		 }
+	return tot;
+}	
+
 public void gauss(int col_num)throws IndiceNonCorretto{
-	  if ((col_num == -1)==true){
-		col_num = l;}
-	  int c = 0;
-	  for (int r = 0; r < h && c < col_num; r++) {
-		if (ObjToDouble(rawMatrix[r*l + c])== 0.0){
-		  swap(r, maxCoeff(r, c));
-		  while (ObjToDouble(rawMatrix[maxCoeff(r, c) * l + c]) == 0.0){
-		  c++;}
-		}
-
-		for (int i = r; i < h; i++){
-		  if (ObjToDouble(rawMatrix[i * l + c]) != 0.0){
-			divRow(i, rawMatrix[i * l + c] );}
-		}
-
-		for (int i = r + 1; i < h; i++){
-		  if (ObjToDouble(rawMatrix[i * l + c])!= 0.0){
-			 double b=ObjToDouble(rawMatrix[i * l + c]);
-			subRow(i, r,b);}////////////////??????? terzo parametro boh
-		}
-
-		approxZero();
-		c++;
-	  }
+	int[]q=orderRaw();//q per ogni riga dice quanti 0 prima di el !=0
+	//per prima riga diversa tt zeri: metto a 1 primo el !=0 poi per altre sottaggo alla prima riga
+	//controllo che primo el sia 1!
+	double coef=1.0; boolean esci=false;
+	for(int r=0;((esci==false)&&(r<h));r++){
+		if(q[r]!=l)//se non è tutta riga di zeric
+		{int in=r*l+q[r];
+		 coef=ObjToDouble(rawMatrix[in]); esci=true;}
 	}
+	 divRow(0, coef);//ok
+	for(int r=1;r<h;r++){
+			if(q[r]==q[r-1]){//quando iva fatto sub row per slittare
+		int in=r*l+q[r];
+		double mm=ObjToDouble(rawMatrix[in]);
+		subRow(r,r-1,mm);
+		q[r]=counZeroInLine(r);}
+	if(q[r]<l){
+			int in=r*l+q[r];
+			divRow(r,ObjToDouble(rawMatrix[in]));//metto piu 1 perche slitto di almeno 1????
+			double d=ObjToDouble(rawMatrix[in]);}
+		}		
+	q=orderRaw();	
+}
+	
+public int searchRow(int col, int rig){
+	int r=rig+1;
+	for(int i=rig*l+col;i<(h*l)-1;i+=l){
+		if(ObjToDouble(rawMatrix[i])==1){return r-1;}
+		r++;
+	}
+return -1;
+}
+
+public void gaussJordan(int col_num)throws IndiceNonCorretto{
+	  gauss(col_num);
+	  boolean unoInColonna=false;
+	  for(int i=col_num-1;i>=0;i--){
+	  unoInColonna=false;
+		for(int r=h-1;r>=0;r--){
+		  if((ObjToDouble(rawMatrix[r*l+i])==1.0)&&(unoInColonna==false))
+				{unoInColonna=true;}
+		  else{  
+		  if(((ObjToDouble(rawMatrix[r*l+i])==1.0)&&(unoInColonna=true))||(ObjToDouble(rawMatrix[r*l+i])!=0.0)){
+			  int rawSub=searchRow(i,r);//i indice col
+			  subRow(r,rawSub,ObjToDouble(rawMatrix[r*l+i]));}
+		  }
+		 }
+	}
+}
+
+
 public final void approxZero()throws IndiceNonCorretto{
   for(int i = 0; i < l*h; i++)
     if(Math.abs(ObjToDouble(getEl(i))) < 0.00000001)
 	 setRawEl(i,0);
 }
-
+/*
 public void gaussJordan(int col_num)throws IndiceNonCorretto{
 	  if (col_num == -1) {
 		col_num = l;
@@ -354,7 +426,6 @@ public void gaussJordan(int col_num)throws IndiceNonCorretto{
 	  int rd;
 	  for (int c = col_num - 1; c >= 0 && r > 0; c--) {
 		rd = r;
-		
 		double a=ObjToDouble(rawMatrix[rd * l + c]);
 		while ((a != 1.0 && rd > 0)==true){
 		  rd--;
@@ -367,63 +438,11 @@ public void gaussJordan(int col_num)throws IndiceNonCorretto{
 		  r--;
 		}
 	  }
-}
+}*/
 
 
 
-public static void main(String [ ] args){
-	
-	Matrix m= new Matrix(3,4);
-	try{
-	m.Input();
-	}
-	catch(IOException e){e.printStackTrace();}
-	
-//m.Output();
-m.fun();}
 
-public void fun(){
-	
-Matrix q=new Matrix(5,5);
-try{
-	q.Input();
-	}
-catch(IOException e){e.printStackTrace();}
-try{
-Matrix s=add(q);}
-catch(DimensioniNonCorrette dnc){}
-
-/*Matrix n=new Matrix();
-n.copy(this);
-n.gaussJordan(2);
-n.Output();
-/*n.fill(2.0);//funziona!!
-n.Output();*/
-/*
-Matrix l= multiply(s); //ok
-l.Output();*/
-
-//Object[]q=copyArr(m);
-/*
-
-Matrix q=new Matrix(2,3);
-try{
-	q.Input();
-	}
-	catch(IOException e){e.printStackTrace();}
-
-q.Output();
-
-//boolean qq=m.equalsTo(q);//ok
-
-//double prodV=vectProd(m,0,q,0);ok
-//System.out.print(prodV);
-
-//Object []ff=copyArr(m);//ok
-Matrix l=add(q,m);
-l.Output();
-*/
-}
 
 }
 /*

@@ -1,6 +1,4 @@
 import java.io.*;
-
-
 public class SquareMatrix extends Matrix{
 public SquareMatrix(int dim){
 		super(dim,dim);}//chiamata costruttore matrix(int,int)
