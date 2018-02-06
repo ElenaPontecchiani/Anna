@@ -12,6 +12,7 @@ public:
     diagonal_matrix(int);
     diagonal_matrix(int,const T& t);
     diagonal_matrix(const matrix<T>& t);
+    diagonal_matrix<T>* clone()const;
 
 
     diagonal_matrix<T> operator+(const diagonal_matrix<T>&)const;
@@ -121,6 +122,10 @@ void diagonal_matrix<T>::setDiag(const T& t){
     this[i + this->getL()*i] = t;
 }
 
+template <class T>
+diagonal_matrix<T>* diagonal_matrix<T>::clone() const{
+  return (new diagonal_matrix<T>(*this));
+}
 
 
 

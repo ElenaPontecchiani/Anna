@@ -36,7 +36,7 @@ public:
     matrix(const int& =1,const int& =1);//inizializzato con l=1,h=1
     matrix(const matrix<T>&);//costruttore di copia
     virtual ~matrix();
-    virtual matrix<T>* clone();
+    virtual matrix<T>* clone() const;
 
     //Operatori Matematici fra matrici
     matrix<T>& operator=(const matrix<T>&);
@@ -455,7 +455,7 @@ bool matrix<T>::isInvertible()const{
 }
 
 template <class T>
-matrix<T>* matrix<T>::clone(){
+matrix<T>* matrix<T>::clone()const{
   return (new matrix<T>(*this));
 }
 

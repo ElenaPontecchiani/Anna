@@ -11,6 +11,7 @@ public:
     vector(const matrix<T>& t);
 
     vector<T> operator=(const vector<T>&);
+    vector<T>* clone()const;
 
     T Euclidean_norm()const;//ritorna norma euclidea
     void Normalize();//ritorna vettore normalizzato
@@ -53,6 +54,10 @@ void vector<T>::Normalize(){
         (*this)[i] = (*this)[i] / norm;
 }
 
+template <class T>
+vector<T>* vector<T>::clone()const{
+  return (new vector<T>(*this));
+}
 
 
 

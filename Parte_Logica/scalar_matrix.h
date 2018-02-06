@@ -8,7 +8,7 @@ class scalar_matrix: public diagonal_matrix<T>{
 private:
 
 public:
-
+    scalar_matrix<T>* clone()const;
     scalar_matrix(int, const T& =0);
     scalar_matrix(const matrix<T>& t);
     virtual T Det ()const;
@@ -36,7 +36,10 @@ T scalar_matrix<T>::Det()const{
   return pow((*this)[0],this->getL());
 }
 
-
+template <class T>
+scalar_matrix<T>* scalar_matrix<T>::clone()const{
+  return (new scalar_matrix<T>(*this));
+}
 
 
 

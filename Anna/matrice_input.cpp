@@ -176,7 +176,7 @@ void Matrice_Input::gauss(){
 }
 
 void Matrice_Input::gaussJordan(){
-    mat->GaussJordan();
+    mat->GaussJordan(-1);
     upMat();
 }
 

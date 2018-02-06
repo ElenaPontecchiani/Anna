@@ -24,6 +24,7 @@ public slots:
     void molt();
     void copy();
     void copy2();
+    void divisione();
 };
 
 #endif // MAINCALC_H

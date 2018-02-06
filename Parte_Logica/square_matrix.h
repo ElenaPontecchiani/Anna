@@ -13,6 +13,8 @@ public:
     square_matrix(const matrix<T>&);
     //~square_matrix();//ridef distruttore non serve?
 
+
+    square_matrix<T>* clone()const;
     //Controlli e bool
     bool isSymmetric()const;
     virtual bool isInvertible()const;
@@ -107,6 +109,11 @@ void square_matrix<T>::Inversa(){
 template <class T>
 bool square_matrix<T>::isInvertible()const{
   return Det() != 0;
+}
+
+template <class T>
+square_matrix<T>* square_matrix<T>::clone()const{
+  return (new square_matrix<T>(*this));
 }
 
 
