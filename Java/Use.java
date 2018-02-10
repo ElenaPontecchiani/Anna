@@ -17,7 +17,7 @@ public static void main(String [ ] args)throws DimensioniNonCorrette,IndiceNonCo
 	m4.fillRawMatrix(ob4);
 	m4.trasposta();
 	m4.gaussJordan(3);
-	m4.Output();
+
 
 	SquareMatrix mm1=new SquareMatrix(2);
 	Object[]obb1 ={2,1,1,1};
