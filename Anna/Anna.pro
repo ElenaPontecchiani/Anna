@@ -5,6 +5,7 @@
 TEMPLATE = app
 TARGET = Anna
 INCLUDEPATH += .
+CONFIG += c++11
 QT += widgets
 
 # The following define makes your compiler warn you if you use any

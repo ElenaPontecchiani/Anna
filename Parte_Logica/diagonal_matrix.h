@@ -17,7 +17,7 @@ public:
 
     diagonal_matrix<T> operator+(const diagonal_matrix<T>&)const;
     diagonal_matrix<T> operator-(const diagonal_matrix<T>&)const;
-    virtual diagonal_matrix<T> operator*(const diagonal_matrix<T>&)const;
+    diagonal_matrix<T> operator*(const diagonal_matrix<T>&)const;
     virtual matrix<T> operator*(const T&)const;
 
     virtual T Det ()const;

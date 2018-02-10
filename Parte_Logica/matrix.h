@@ -42,7 +42,7 @@ public:
     matrix<T>& operator=(const matrix<T>&);
     matrix<T> operator+(const matrix<T>&)const;
     matrix<T> operator-(const matrix<T>&)const;
-    matrix<T> operator*(const matrix<T>&)const;
+    virtual matrix<T> operator*(const matrix<T>&)const;
     bool sameDim(const matrix<T>&)const;
     bool isMultBy(const matrix<T>&)const;
 
@@ -66,7 +66,7 @@ public:
     void approxZero();
 
     //Funzioni scalari che si applicano elemento per elemento
-    virtual matrix<T> operator*(const T&)const;//prodotto con scalare
+    matrix<T> operator*(const T&)const;//prodotto con scalare
     void mathOp(double (*function)(double));
     void mathOp(double (*function)(double,double),const double&);
 
