@@ -1,4 +1,3 @@
-import java.io.*;
 class Use{
 public static void main(String [ ] args)throws DimensioniNonCorrette,IndiceNonCorretto{
 	Matrix m1= new Matrix(3,4);   	
@@ -24,7 +23,6 @@ public static void main(String [ ] args)throws DimensioniNonCorrette,IndiceNonCo
 	mm1.fillRawMatrix(obb1);
 	boolean bool1=mm1.isSymmetric();
 	Object q=mm1.Det();
-	//mm1.Inversa();//////////corregere
 	
 	DiagonalMatrix dm1=new DiagonalMatrix(2);
 	Object[]obd1 ={2,0,0,1};
@@ -48,8 +46,9 @@ public static void main(String [ ] args)throws DimensioniNonCorrette,IndiceNonCo
 	v.fillRawMatrix(obv1);
 	boolean bool2=v.isColumn();
 	v.Normalize();
-
+    m1.callMethod("pow",3); 
 }
+
 
 
 }

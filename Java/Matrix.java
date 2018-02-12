@@ -1,5 +1,3 @@
-//import java.io.*;//da togliere poi, solo per testare
-
 public class Matrix{
 	private  int h;
 	private  int l;
@@ -19,30 +17,7 @@ public Matrix(int height, int length){
 	 for(int i=0;i<l*h;i++)	 rawMatrix[i]=new Object();
 	}
 	
-/*	
-public void Cin(int i)throws java.io.IOException {	
-InputStreamReader reader = new InputStreamReader (System.in);
-BufferedReader myInput = new BufferedReader (reader);
-rawMatrix[i]=myInput.readLine();
-return ;}
 
-public void Input()throws java.io.IOException{
-try{
-	for(int i=0;i<h*l;i++){
-		Cin(i);//chiama una volta si e una no con for
-		 }
-	}
-	catch(IOException e){e.printStackTrace();}
-}
-
-public  void Output()
-{ for (int i = 0; i <h; i++)
-	{for (int j = 0; j < l; j++)
-	  { System.out.print(rawMatrix[i *l + j]+" ");
-	  } System.out.print("\n");
-	}
-} 
-*/
 public void fillRawMatrix(Object[] ob){
 	System.arraycopy(ob,0,rawMatrix,0,h*l);
 }
@@ -335,9 +310,45 @@ public final void approxZero()throws IndiceNonCorretto{
 	 setRawEl(i,0);
 }
 
+
+
+public void callMethod(String name, double n){
+	if(name.equals("abs")){
+		for(int i=0;i<h*l;i++){
+			double c=ObjToDouble(rawMatrix[i]);
+			rawMatrix[i]=Math.abs(c);}
+		return;}	
+	if(name.equals("cbrt")){
+		for(int i=0;i<h*l;i++){
+			double c=ObjToDouble(rawMatrix[i]);
+			rawMatrix[i]=Math.cbrt(c);}
+		return;}
+		
+	if(name.equals("log")){
+		for(int i=0;i<h*l;i++){
+			double c=ObjToDouble(rawMatrix[i]);
+			rawMatrix[i]=Math.log(c);}
+		return;}
+	if(name.equals("log10")){
+		for(int i=0;i<h*l;i++){
+			double c=ObjToDouble(rawMatrix[i]);
+			rawMatrix[i]=Math.log10(c);}
+		return;}
+	if(name.equals("pow")){
+		for(int i=0;i<h*l;i++){
+			double c=ObjToDouble(rawMatrix[i]);
+			rawMatrix[i]=Math.pow(c,n);}
+		return;}
+	if(name.equals("sqrt")){
+		for(int i=0;i<h*l;i++){
+			double c=ObjToDouble(rawMatrix[i]);
+			rawMatrix[i]=Math.sqrt(c);}
+		return;}
+	
+	return;	
 }
 
-
+}
 
 
 

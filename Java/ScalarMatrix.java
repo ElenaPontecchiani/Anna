@@ -1,4 +1,3 @@
-//import java.io.*;
 public class ScalarMatrix extends DiagonalMatrix{
 
 public ScalarMatrix(int dim)throws IndiceNonCorretto{

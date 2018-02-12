@@ -1,5 +1,3 @@
-//import java.io.*;
-
 public class Vector extends Matrix{
 public Vector(int height, int length){
 	super(height,length);
