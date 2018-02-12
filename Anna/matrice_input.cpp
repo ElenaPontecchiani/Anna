@@ -301,53 +301,33 @@ void Matrice_Input::rectify(){
                 if (test != (*mat)[i*c+i])
                     scal = false;
             if (scal){  //scalare
-                matrix<double>* temp = new scalar_matrix<double>(*mat);
-                delete mat;
-                mat = temp;
+              if (tipoText() != "Matrice Scalare"){
+                  matrix<double>* temp = new scalar_matrix<double>(*mat);
+                  delete mat;
+                  mat = temp;
+              }
             }
             else{   //diagonale
-                matrix<double>* temp = new diagonal_matrix<double>(*mat);
-                delete mat;
-                mat = temp;
+                if (tipoText() != "Matrice Diagonale"){
+                  matrix<double>* temp = new diagonal_matrix<double>(*mat);
+                  delete mat;
+                  mat = temp;
+                }
             }
         }
         else{ //quadrata
-            matrix<double>* temp = new square_matrix<double>(*mat);
-            delete mat;
-            mat = temp;
+            if (tipoText() != "Matrice Quadrata"){
+              matrix<double>* temp = new square_matrix<double>(*mat);
+              delete mat;
+              mat = temp;
+            }
         }
     }
     else{ //Matrice ordinaria
-        matrix<double>* temp = new matrix<double>(*mat);
-        delete mat;
-        mat = temp;
+        if (tipoText() != "Matrice Ordinaria"){
+          matrix<double>* temp = new matrix<double>(*mat);
+          delete mat;
+          mat = temp;
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
