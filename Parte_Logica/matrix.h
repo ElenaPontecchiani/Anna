@@ -176,39 +176,33 @@ T& matrix<T>::operator[](const int& i)const{
 #include "basxMath.h"
 template <class T>
 matrix<T> matrix<T>::operator+(const matrix<T>& m)const{
-  if(!(*this).sameDim(m)){
-    //Throw///
-    std::cout << "Non sommabile vezz" << std::endl;
+  if((*this).sameDim(m)){
+    matrix<T> temp(h,l);
+    for(int i = 0; i < l*h; i++)
+      temp[i] = (*this)[i] + m[i];
+    return temp;
   }
-  matrix<T> temp(h,l);
-  for(int i = 0; i < l*h; i++)
-    temp[i] = (*this)[i] + m[i];
-  return temp;
 }
 
 template <class T>
 matrix<T> matrix<T>::operator-(const matrix<T>& m)const{
-  if(!(*this).sameDim(m)){
-    //Throw///
-    std::cout << "Non sommabile vezz" << std::endl;
+  if((*this).sameDim(m)){
+    matrix<T> temp(h,l);
+    for(int i = 0; i < l*h; i++)
+      temp[i] = (*this)[i] - m[i];
+    return temp;
   }
-  matrix<T> temp(h,l);
-  for(int i = 0; i < l*h; i++)
-    temp[i] = (*this)[i] - m[i];
-  return temp;
 }
 
 template <class T>
 matrix<T> matrix<T>::operator*(const matrix<T>& m)const{
-  if(l != m.h){
-    std::cout << "VEzzzzzzzzz";
+  if(l == m.h){
+    matrix<T> temp(h,m.l);
+    for(int i = 0; i < temp.h; i++)
+      for(int j = 0; j < temp.l; j++)
+        temp[i*temp.l+j] = VectProd((*this),i,m,j);
+    return temp;
   }
-  matrix<T> temp(h,m.l);
-  for(int i = 0; i < temp.h; i++)
-    for(int j = 0; j < temp.l; j++){
-      temp[i*temp.l+j] = VectProd((*this),i,m,j);
-    }
-  return temp;
 }
 
 template <class T>
@@ -289,8 +283,6 @@ void matrix<T>::divRow(int r, T coeff){
   for(int c = 0; c < l; c++)
     if((*this)[r*l+c] != 0)
       (*this)[r*l+c] = (*this)[r*l+c]/coeff;
-  /*if (r == 1)
-    std::cout << "Riga: " << r << " Coeff: " << coeff << std::endl;*/
 }
 
 template <class T>
@@ -400,37 +392,37 @@ void matrix<T>::Cut(int row_start, int row_num, int col_start, int col_num){
 
 template <class T>
 void matrix<T>::Append(const matrix<T>& m1){
-  if(m1.h != h)
-    std::cout << "PROBLEMA VEZZZ";
-  int pos = 0;
-  matrix<T> temp(m1.h,l+m1.l);
-  for(int r = 0; r < m1.h; r++){
-    for(int c = 0; c < l; c++){
-      temp[pos] = (*this)[r*l+c];
-      pos++;
+  if(m1.h == h){
+    int pos = 0;
+    matrix<T> temp(m1.h,l+m1.l);
+    for(int r = 0; r < m1.h; r++){
+      for(int c = 0; c < l; c++){
+        temp[pos] = (*this)[r*l+c];
+        pos++;
+      }
+      for(int c = 0; c < m1.l; c++){
+        temp[pos] = m1[r*m1.l+c];
+        pos++;
+      }
     }
-    for(int c = 0; c < m1.l; c++){
-      temp[pos] = m1[r*m1.l+c];
-      pos++;
-    }
+    *this = temp;
   }
-  *this = temp;
 }
 
 
 template <class T>
 void matrix<T>::AppendDown(const matrix<T>& m1){
-  if(m1.l != l)
-    std::cout << "PROBLEMA VEZZZ";
-  int pos = 0;
-  matrix<T> temp(h + m1.h,m1.l);
-  int i = 0;
-  for(; i < l*h; i++)
-      temp[i] = (*this)[i];
-  for(; i < temp.h*temp.l; i++)
-      temp[i] = m1[i - l*h];
+  if(m1.l == l){
+    int pos = 0;
+    matrix<T> temp(h + m1.h,m1.l);
+    int i = 0;
+    for(; i < l*h; i++)
+        temp[i] = (*this)[i];
+    for(; i < temp.h*temp.l; i++)
+        temp[i] = m1[i - l*h];
 
-  *this = temp;
+    *this = temp;
+  }
 }
 
 template <class T>

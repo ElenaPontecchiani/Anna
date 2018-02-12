@@ -13,8 +13,8 @@ public:
     vector<T> operator=(const vector<T>&);
     vector<T>* clone()const;
 
-    T Euclidean_norm()const;//ritorna norma euclidea
-    void Normalize();//ritorna vettore normalizzato
+    T Euclidean_norm()const;
+    void Normalize();
     bool isRow() const;
     bool isColumn() const;
 

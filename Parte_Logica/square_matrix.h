@@ -11,7 +11,6 @@ public:
     //Ridefinizione dei big3
     square_matrix(int);
     square_matrix(const matrix<T>&);
-    //~square_matrix();//ridef distruttore non serve?
 
 
     square_matrix<T>* clone()const;
@@ -97,7 +96,6 @@ void square_matrix<T>::addId(){
 
 template <class T>
 void square_matrix<T>::Inversa(){
-    //return *(addId().GaussJordan(this->getH())->Cut(0,this->getH(),this->getH(),this->getH()*2));
     this->addId();
     this->GaussJordan(this->getH());
     this->Cut(0,this->getH(),this->getH(),this->getH()*2);

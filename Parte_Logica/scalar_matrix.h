@@ -1,7 +1,7 @@
 #ifndef SCALARMATRIX_H
 #define SCALARMATRIX_H
 
-#include "diagonal_matrix.h" //de ve includere base o il contrario?
+#include "diagonal_matrix.h" 
 
 template<class T>
 class scalar_matrix: public diagonal_matrix<T>{
